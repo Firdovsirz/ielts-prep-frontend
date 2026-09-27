@@ -72,8 +72,8 @@ function Grading({ m }: { m: Mock }) {
             {pending
               ? 'Both are graded against the band descriptors; this usually takes a minute or two. The page updates by itself.'
               : m.gradingAvailable
-                ? 'Grading did not finish. Open the paper below and use "Retry grading".'
-                : 'Writing and Speaking need the Claude API key to be graded. Add ANTHROPIC_API_KEY to .env, restart, then use "Retry grading" on each paper.'}
+                ? 'Grading did not finish. Open the paper below and use "Grade now".'
+                : 'Writing and Speaking need the Claude API key to be graded. Add ANTHROPIC_API_KEY to .env, restart, then use "Grade now" on each paper.'}
           </p>
         </div>
       </div>

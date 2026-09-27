@@ -2795,7 +2795,11 @@ a.area-row:hover {
 .progress > span {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, var(--m, var(--brand)), color-mix(in srgb, var(--m, var(--brand)) 60%, #fff));
+  background: linear-gradient(
+    90deg,
+    var(--m, var(--brand)),
+    color-mix(in srgb, var(--m, var(--brand)) 60%, #fff)
+  );
   border-radius: 999px;
   transition: width 0.3s ease;
 }
@@ -3493,7 +3497,11 @@ kbd {
 .plan-day.test-day {
   border-top: 4px solid var(--gold);
   background:
-    radial-gradient(400px 160px at 100% 0%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 70%),
+    radial-gradient(
+      400px 160px at 100% 0%,
+      color-mix(in srgb, var(--gold) 16%, transparent),
+      transparent 70%
+    ),
     var(--surface);
 }
 
