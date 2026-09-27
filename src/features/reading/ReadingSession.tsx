@@ -77,7 +77,9 @@ export function ReadingSession() {
       [draftKey, `${draftKey}.flags`, `${draftKey}.time`].forEach((k) => storage.remove(k));
       queryClient.setQueryData(['reading', 'result', sessionId], result);
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      navigate(`/reading/result/${sessionId}`, { replace: true });
+      navigate(data?.mockTestId ? `/mock/${data.mockTestId}` : `/reading/result/${sessionId}`, {
+        replace: true,
+      });
     },
   });
 
@@ -91,7 +93,10 @@ export function ReadingSession() {
   }, [exam, remaining, submit]);
 
   useEffect(() => {
-    if (data && data.status !== 'IN_PROGRESS') navigate(`/reading/result/${sessionId}`, { replace: true });
+    if (data && data.status !== 'IN_PROGRESS')
+      navigate(data?.mockTestId ? `/mock/${data.mockTestId}` : `/reading/result/${sessionId}`, {
+        replace: true,
+      });
   }, [data, navigate, sessionId]);
 
   const setAnswer = useCallback((n: number, v: string) => setAnswers((a) => ({ ...a, [n]: v })), []);
@@ -124,7 +129,7 @@ export function ReadingSession() {
   return (
     <div className="exam-shell">
       <div className="exam-bar">
-        <ExamExit to="/reading" />
+        <ExamExit to={data?.mockTestId ? `/mock/${data.mockTestId}` : '/reading'} />
         <span className="exam-brand">IELTS · Reading</span>
         <span className={`badge ${exam ? 'badge-accent' : 'badge-dark'}`}>
           {exam ? 'Exam mode' : 'Practice'}

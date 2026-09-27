@@ -58,7 +58,10 @@ export function WritingSession() {
     return () => window.clearInterval(t);
   }, [task, draftKey]);
   useEffect(() => {
-    if (data && data.status !== 'IN_PROGRESS') navigate(`/writing/result/${sessionId}`, { replace: true });
+    if (data && data.status !== 'IN_PROGRESS')
+      navigate(data?.mockTestId ? `/mock/${data.mockTestId}` : `/writing/result/${sessionId}`, {
+        replace: true,
+      });
   }, [data, navigate, sessionId]);
 
   const submit = useMutation({
@@ -83,7 +86,9 @@ export function WritingSession() {
       storage.remove(draftKey);
       storage.remove(`${draftKey}.time`);
       queryClient.setQueryData(['writing', 'result', sessionId], result);
-      navigate(`/writing/result/${sessionId}`, { replace: true });
+      navigate(data?.mockTestId ? `/mock/${data.mockTestId}` : `/writing/result/${sessionId}`, {
+        replace: true,
+      });
     },
   });
 
@@ -111,7 +116,7 @@ export function WritingSession() {
   return (
     <div className="exam-shell">
       <div className="exam-bar">
-        <ExamExit to="/writing" />
+        <ExamExit to={data?.mockTestId ? `/mock/${data.mockTestId}` : '/writing'} />
         <span className="exam-brand">IELTS · Writing</span>
         <span className={`badge ${exam ? 'badge-accent' : 'badge-primary'}`}>
           {exam ? 'Exam mode' : 'Practice'}

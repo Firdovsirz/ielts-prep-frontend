@@ -59,7 +59,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["list"];
+        get: operations["list_1"];
         put?: never;
         post: operations["generate_1"];
         delete?: never;
@@ -75,7 +75,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["get_1"];
+        get: operations["get_2"];
         put?: never;
         post?: never;
         delete?: never;
@@ -107,7 +107,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["list_1"];
+        get: operations["list_2"];
         put?: never;
         post?: never;
         delete?: never;
@@ -381,7 +381,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["start_3"];
+        post: operations["start_4"];
         delete?: never;
         options?: never;
         head?: never;
@@ -430,6 +430,70 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["submit_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/mock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["list"];
+        put?: never;
+        post: operations["start_3"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/mock/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["get_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/mock/{id}/abandon": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["abandon"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/mock/{id}/stage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["startStage"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1667,6 +1731,11 @@ export interface components {
         ListeningSessionView: {
             /** @enum {string} */
             kind: "READING_TEST" | "READING_PASSAGE" | "LISTENING_TEST" | "LISTENING_SECTION" | "WRITING_TASK1" | "WRITING_TASK2" | "WRITING_TEST" | "SPEAKING_TEST" | "SPEAKING_PART" | "GRAMMAR_DIAGNOSTIC" | "GRAMMAR_EXERCISE" | "GRAMMAR_ERROR_DRILL" | "VOCAB_REVIEW";
+            /**
+             * Format: int64
+             * @default
+             */
+            mockTestId: number | null;
             /** @enum {string} */
             mode: "PRACTICE" | "EXAM";
             /** Format: int32 */
@@ -1754,6 +1823,135 @@ export interface components {
         Me: {
             email: string;
             role: string;
+        };
+        /** @default null */
+        MockQuestionTypeRow: {
+            /** Format: int32 */
+            correct: number;
+            module: string;
+            questionType: string;
+            /** Format: int32 */
+            total: number;
+        };
+        /** @default null */
+        MockReport: {
+            bands: {
+                [key: string]: number;
+            };
+            /** Format: double */
+            overall: number;
+            questionTypes: components["schemas"]["MockQuestionTypeRow"][];
+            speakingCriteria: {
+                [key: string]: number;
+            };
+            strengths: string[];
+            /** Format: double */
+            target: number;
+            verdict: string;
+            weaknesses: string[];
+            writingCriteria: {
+                [key: string]: {
+                    [key: string]: number;
+                };
+            };
+        };
+        /** @default null */
+        MockStageView: {
+            /**
+             * Format: double
+             * @default
+             */
+            band: number | null;
+            grading: string;
+            label: string;
+            /**
+             * Format: int32
+             * @default
+             */
+            max: number | null;
+            /** Format: int32 */
+            minutes: number;
+            module: string;
+            /**
+             * Format: int32
+             * @default
+             */
+            raw: number | null;
+            /**
+             * Format: int64
+             * @default
+             */
+            sessionId: number | null;
+            state: string;
+            /**
+             * Format: int32
+             * @default
+             */
+            timeUsedSeconds: number | null;
+        };
+        /** @default null */
+        MockSummary: {
+            /**
+             * Format: date-time
+             * @default
+             */
+            finishedAt: string | null;
+            /** Format: int64 */
+            id: number;
+            /**
+             * Format: double
+             * @default
+             */
+            listening: number | null;
+            /**
+             * Format: double
+             * @default
+             */
+            overall: number | null;
+            /**
+             * Format: double
+             * @default
+             */
+            reading: number | null;
+            /**
+             * Format: double
+             * @default
+             */
+            speaking: number | null;
+            stage: string;
+            /** Format: date-time */
+            startedAt: string;
+            status: string;
+            /**
+             * Format: double
+             * @default
+             */
+            writing: number | null;
+        };
+        /** @default null */
+        MockView: {
+            /**
+             * Format: date-time
+             * @default
+             */
+            finishedAt: string | null;
+            gradingAvailable: boolean;
+            /** Format: int64 */
+            id: number;
+            /**
+             * Format: double
+             * @default
+             */
+            overall: number | null;
+            /** @default  */
+            report: components["schemas"]["MockReport"];
+            stage: string;
+            stages: components["schemas"]["MockStageView"][];
+            /** Format: date-time */
+            startedAt: string;
+            status: string;
+            /** Format: double */
+            targetBand: number;
         };
         ModelSpokenAnswer: {
             answer: string;
@@ -2052,6 +2250,11 @@ export interface components {
         ReadingSessionView: {
             /** @enum {string} */
             kind: "READING_TEST" | "READING_PASSAGE" | "LISTENING_TEST" | "LISTENING_SECTION" | "WRITING_TASK1" | "WRITING_TASK2" | "WRITING_TEST" | "SPEAKING_TEST" | "SPEAKING_PART" | "GRAMMAR_DIAGNOSTIC" | "GRAMMAR_EXERCISE" | "GRAMMAR_ERROR_DRILL" | "VOCAB_REVIEW";
+            /**
+             * Format: int64
+             * @default
+             */
+            mockTestId: number | null;
             /** @enum {string} */
             mode: "PRACTICE" | "EXAM";
             passages: components["schemas"]["ReadingPassageView"][];
@@ -2206,6 +2409,11 @@ export interface components {
             examinerAvailable: boolean;
             /** @enum {string} */
             kind: "READING_TEST" | "READING_PASSAGE" | "LISTENING_TEST" | "LISTENING_SECTION" | "WRITING_TASK1" | "WRITING_TASK2" | "WRITING_TEST" | "SPEAKING_TEST" | "SPEAKING_PART" | "GRAMMAR_DIAGNOSTIC" | "GRAMMAR_EXERCISE" | "GRAMMAR_ERROR_DRILL" | "VOCAB_REVIEW";
+            /**
+             * Format: int64
+             * @default
+             */
+            mockTestId: number | null;
             /** @enum {string} */
             mode: "PRACTICE" | "EXAM";
             plan: components["schemas"]["SpeakingPlan"];
@@ -2659,6 +2867,11 @@ export interface components {
         WritingSessionView: {
             /** @enum {string} */
             kind: "READING_TEST" | "READING_PASSAGE" | "LISTENING_TEST" | "LISTENING_SECTION" | "WRITING_TASK1" | "WRITING_TASK2" | "WRITING_TEST" | "SPEAKING_TEST" | "SPEAKING_PART" | "GRAMMAR_DIAGNOSTIC" | "GRAMMAR_EXERCISE" | "GRAMMAR_ERROR_DRILL" | "VOCAB_REVIEW";
+            /**
+             * Format: int64
+             * @default
+             */
+            mockTestId: number | null;
             /** @enum {string} */
             mode: "PRACTICE" | "EXAM";
             /** Format: int64 */
@@ -2784,7 +2997,7 @@ export interface operations {
             };
         };
     };
-    list: {
+    list_1: {
         parameters: {
             query?: never;
             header?: never;
@@ -2824,7 +3037,7 @@ export interface operations {
             };
         };
     };
-    get_1: {
+    get_2: {
         parameters: {
             query?: never;
             header?: never;
@@ -2866,7 +3079,7 @@ export interface operations {
             };
         };
     };
-    list_1: {
+    list_2: {
         parameters: {
             query?: {
                 subtype?: string;
@@ -3244,7 +3457,7 @@ export interface operations {
             };
         };
     };
-    start_3: {
+    start_4: {
         parameters: {
             query?: never;
             header?: never;
@@ -3334,6 +3547,112 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ListeningResultView"];
+                };
+            };
+        };
+    };
+    list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MockSummary"][];
+                };
+            };
+        };
+    };
+    start_3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MockView"];
+                };
+            };
+        };
+    };
+    get_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MockView"];
+                };
+            };
+        };
+    };
+    abandon: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MockView"];
+                };
+            };
+        };
+    };
+    startStage: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MockView"];
                 };
             };
         };

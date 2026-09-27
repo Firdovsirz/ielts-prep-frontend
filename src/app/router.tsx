@@ -23,6 +23,9 @@ import { SpeakingResult } from '../features/speaking/SpeakingResult';
 import { VocabularyPage } from '../features/vocab/VocabularyPage';
 import { PlanPage } from '../features/plan/PlanPage';
 import { CoachPage } from '../features/coach/CoachPage';
+import { MockHome } from '../features/mock/MockHome';
+import { MockRunner } from '../features/mock/MockRunner';
+import { MockReport } from '../features/mock/MockReport';
 
 export const router = createBrowserRouter([
   // Exam screens are full-screen (no sidebar), like the computer-delivered test.
@@ -30,6 +33,7 @@ export const router = createBrowserRouter([
   { path: '/writing/session/:id', element: <WritingSession /> },
   { path: '/listening/session/:id', element: <ListeningSession /> },
   { path: '/speaking/session/:id', element: <SpeakingSession /> },
+  { path: '/mock/:id', element: <MockRunner /> },
   {
     path: '/',
     element: <Layout />,
@@ -50,7 +54,8 @@ export const router = createBrowserRouter([
       { path: 'vocabulary', element: <VocabularyPage /> },
       { path: 'dashboard', element: <DashboardPage /> },
       { path: 'plan', element: <PlanPage /> },
-      { path: 'mock', element: <ComingSoon title="Mock test" /> },
+      { path: 'mock', element: <MockHome /> },
+      { path: 'mock/report/:id', element: <MockReport /> },
       { path: 'history', element: <HistoryPage /> },
       { path: 'coach', element: <CoachPage /> },
       { path: 'settings', element: <ComingSoon title="Settings" /> },

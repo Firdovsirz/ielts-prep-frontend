@@ -60,7 +60,10 @@ export function ListeningSession() {
     return () => runner.current?.stop();
   }, []);
   useEffect(() => {
-    if (data && data.status !== 'IN_PROGRESS') navigate(`/listening/result/${sessionId}`, { replace: true });
+    if (data && data.status !== 'IN_PROGRESS')
+      navigate(data?.mockTestId ? `/mock/${data.mockTestId}` : `/listening/result/${sessionId}`, {
+        replace: true,
+      });
   }, [data, navigate, sessionId]);
 
   /** Moves the player to a new phase and shows that part's questions. */
@@ -88,7 +91,9 @@ export function ListeningSession() {
       [key, `${key}.transfer`, `${key}.replays`, `${key}.progress`].forEach((k) => storage.remove(k));
       queryClient.setQueryData(['listening', 'result', sessionId], result);
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      navigate(`/listening/result/${sessionId}`, { replace: true });
+      navigate(data?.mockTestId ? `/mock/${data.mockTestId}` : `/listening/result/${sessionId}`, {
+        replace: true,
+      });
     },
   });
 
@@ -227,7 +232,7 @@ export function ListeningSession() {
   return (
     <div className="exam-shell">
       <div className="exam-bar">
-        <ExamExit to="/listening" />
+        <ExamExit to={data?.mockTestId ? `/mock/${data.mockTestId}` : '/listening'} />
         <span className="exam-brand">IELTS · Listening</span>
         <span className={`badge ${exam ? 'badge-accent' : 'badge-dark'}`}>
           {exam ? 'Exam mode' : 'Practice'}

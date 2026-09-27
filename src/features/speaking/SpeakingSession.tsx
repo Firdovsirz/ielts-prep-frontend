@@ -44,7 +44,10 @@ export function SpeakingSession() {
   const remaining = until == null ? null : Math.max(0, Math.round((until - now) / 1000));
 
   useEffect(() => {
-    if (data && data.status !== 'IN_PROGRESS') navigate(`/speaking/result/${sessionId}`, { replace: true });
+    if (data && data.status !== 'IN_PROGRESS')
+      navigate(data?.mockTestId ? `/mock/${data.mockTestId}` : `/speaking/result/${sessionId}`, {
+        replace: true,
+      });
   }, [data, navigate, sessionId]);
   useEffect(
     () => () => {
@@ -72,6 +75,8 @@ export function SpeakingSession() {
     setUntil(seconds ? Date.now() + seconds * 1000 : null);
   }, []);
 
+  const mockTestId = data?.mockTestId ?? null;
+
   const nextTurn = useCallback(async () => {
     setError(null);
     setPending(null);
@@ -89,7 +94,9 @@ export function SpeakingSession() {
         );
         recorder.current?.release();
         queryClient.setQueryData(['speaking', 'result', sessionId], result);
-        navigate(`/speaking/result/${sessionId}`, { replace: true });
+        navigate(mockTestId ? `/mock/${mockTestId}` : `/speaking/result/${sessionId}`, {
+          replace: true,
+        });
         return;
       }
       await say(t.utterance);
@@ -103,7 +110,7 @@ export function SpeakingSession() {
       setError(e);
       setStage('ready');
     }
-  }, [navigate, queryClient, say, sessionId, startAnswer]);
+  }, [navigate, queryClient, say, sessionId, startAnswer, mockTestId]);
 
   const send = useCallback(
     async (rec: Recording, transcript: string) => {
@@ -178,7 +185,7 @@ export function SpeakingSession() {
   return (
     <div className="exam-shell speaking-shell">
       <div className="exam-bar">
-        <ExamExit to="/speaking" />
+        <ExamExit to={data?.mockTestId ? `/mock/${data.mockTestId}` : '/speaking'} />
         <span className="exam-brand">IELTS · Speaking</span>
         <span className={`badge ${exam ? 'badge-accent' : 'badge-dark'}`}>
           {exam ? 'Exam mode' : 'Practice'}

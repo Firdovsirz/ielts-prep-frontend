@@ -93,7 +93,7 @@ export function SpeakingHome() {
   );
 }
 
-function MicCheck() {
+export function MicCheck() {
   const [level, setLevel] = useState(0);
   const [transcript, setTranscript] = useState('');
   const [on, setOn] = useState(false);
