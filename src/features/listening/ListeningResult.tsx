@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import { api, unwrap, type Schemas } from '../../api/client';
 import { BandPill, ErrorBox, Kpi, Loading, PageHeader } from '../../components/ui';
@@ -7,6 +7,7 @@ import { QuestionGroupView } from '../../components/questions/QuestionGroupView'
 import { assignVoices } from '../../lib/voices';
 import { loadVoices, SpeechRunner } from '../../lib/speech';
 import { titleCase } from '../../lib/format';
+import { PickableText } from '../../components/PickableText';
 
 type Result = Schemas['QuestionResult'];
 type SectionView = Schemas['ListeningSectionView'];
@@ -21,6 +22,7 @@ export function ListeningResult() {
   });
   const [active, setActive] = useState(0);
   const [focusLine, setFocusLine] = useState<number | null>(null);
+  const [collect, setCollect] = useState(false);
   const byNumber = useMemo(() => {
     const map: Record<number, Result> = {};
     result.data?.sections.forEach((s) => s.questions.forEach((q) => (map[q.number] = q)));
@@ -101,9 +103,20 @@ export function ListeningResult() {
           <div className="card">
             <div className="card-title">
               <h3>{sr.title}</h3>
-              <span className="small muted">Transcript — double-check where each answer was said</span>
+              <button
+                className={`chip${collect ? ' chip-active' : ''}`}
+                onClick={() => setCollect((c) => !c)}
+                title="Click unfamiliar words in the transcript to add them to your vocabulary deck"
+              >
+                {collect ? 'Collecting words — click to finish' : '+ Collect words'}
+              </button>
             </div>
-            <Transcript section={text} focus={focusLine} />
+            <p className="small muted" style={{ marginTop: 0 }}>
+              {collect
+                ? 'Click any word you did not know; it is added to your deck with this line as context.'
+                : 'Transcript — double-check where each answer was said.'}
+            </p>
+            <Transcript section={text} focus={focusLine} collect={collect} />
           </div>
           <div className="card">
             {text.section.question_groups.map((g) => (
@@ -123,7 +136,33 @@ export function ListeningResult() {
   );
 }
 
-function Transcript({ section, focus }: { section: SectionView; focus: number | null }) {
+function Transcript({
+  section,
+  focus,
+  collect,
+}: {
+  section: SectionView;
+  focus: number | null;
+  collect: boolean;
+}) {
+  const qc = useQueryClient();
+  const [picked, setPicked] = useState<Set<string>>(() => new Set());
+  const [note, setNote] = useState<string | null>(null);
+  const capture = useMutation({
+    mutationFn: ({ word, sentence }: { word: string; sentence: string }) =>
+      unwrap(api.POST('/api/vocab/capture', { body: { word, sentence, source: 'LISTENING_FLAG' } })),
+    onSuccess: (r, v) => {
+      if (r.result === 'IGNORED') {
+        setNote(`“${v.word}” is too common to be worth a flashcard.`);
+        return;
+      }
+      setPicked((p) => new Set(p).add(v.word.toLowerCase()));
+      setNote(
+        r.result === 'ADDED' ? `Added “${r.word}” to your deck.` : `“${r.word}” is already in your deck.`,
+      );
+      qc.invalidateQueries({ queryKey: ['vocab'] });
+    },
+  });
   const runner = useRef<SpeechRunner | null>(null);
   const voices = useRef<SpeechSynthesisVoice[]>([]);
   useEffect(() => {
@@ -152,6 +191,11 @@ function Transcript({ section, focus }: { section: SectionView; focus: number | 
 
   return (
     <div className="transcript-lines">
+      {collect && note && (
+        <div className="alert alert-info small" role="status">
+          {note}
+        </div>
+      )}
       {s.script.map((l, i) => (
         <div
           key={i}
@@ -163,7 +207,15 @@ function Transcript({ section, focus }: { section: SectionView; focus: number | 
             <span className="small muted">{titleCase(names[l.speaker]?.accent ?? '')}</span>
           </div>
           <div className="t-text">
-            {l.text}{' '}
+            {collect ? (
+              <PickableText
+                text={l.text}
+                picked={picked}
+                onPick={(word, sentence) => capture.mutate({ word, sentence })}
+              />
+            ) : (
+              l.text
+            )}{' '}
             <button
               className="t-play"
               onClick={() => play(i)}
