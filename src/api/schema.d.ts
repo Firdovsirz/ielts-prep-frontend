@@ -84,6 +84,198 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/grammar': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['overview'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/areas/{area}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['area'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/areas/{area}/generate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['generate'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/diagnostic': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['startDiagnostic'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/diagnostic/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['getDiagnostic'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/diagnostic/{id}/answer': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['answer'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/error-practice/{subtype}/start': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['startDrill'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/exercises/{itemId}/start': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['startExercise'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/sessions/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['session_2'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/sessions/{id}/result': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['result_2'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/sessions/{id}/self-assess': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['selfAssess'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/grammar/sessions/{id}/submit': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['submit_2'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/reading/passages': {
     parameters: {
       query?: never;
@@ -352,6 +544,11 @@ export interface components {
       name: string;
       values: number[];
     };
+    CommonMistake: {
+      right: string;
+      why: string;
+      wrong: string;
+    };
     CriterionBand: {
       /** Format: int32 */
       band: number;
@@ -359,6 +556,48 @@ export interface components {
       justification: string;
       strengths: string[];
       weaknesses: string[];
+    };
+    /** @default null */
+    DiagnosticAnswerRequest: {
+      answer?: string;
+      questionId?: string;
+    };
+    /** @default null */
+    DiagnosticAnswerResult: {
+      correct: boolean;
+      correctAnswer: string;
+      explanation: string;
+      next: components['schemas']['DiagnosticView'];
+    };
+    DiagnosticOption: {
+      key: string;
+      text: string;
+    };
+    /** @default null */
+    DiagnosticQuestionView: {
+      area: string;
+      areaName: string;
+      id: string;
+      /** Format: int32 */
+      level: number;
+      options: components['schemas']['DiagnosticOption'][];
+      prompt: string;
+    };
+    /** @default null */
+    DiagnosticView: {
+      /** Format: int32 */
+      asked: number;
+      /** Format: int64 */
+      diagnosticId: number;
+      /** @default  */
+      question: components['schemas']['DiagnosticQuestionView'];
+      /** @default  */
+      scores: {
+        [key: string]: number;
+      } | null;
+      status: string;
+      /** Format: int32 */
+      total: number;
     };
     DiagramEdge: {
       from: string;
@@ -435,6 +674,15 @@ export interface components {
       error_id: number;
       original: string;
     };
+    ExerciseItem: {
+      accepted_answers: string[];
+      check_mode: string;
+      explanation: string;
+      id: string;
+      model_answer: string;
+      options: string[];
+      prompt: string;
+    };
     /** @default null */
     FlaggedWordRequest: {
       /** Format: int64 */
@@ -442,8 +690,184 @@ export interface components {
       sentence?: string;
       word?: string;
     };
+    GenerationQueued: {
+      message: string;
+    };
+    /** @default null */
+    GrammarAreaDetail: {
+      area: components['schemas']['GrammarAreaSummary'];
+      /** @default  */
+      lesson: components['schemas']['Lesson'];
+      recentErrors: components['schemas']['GrammarErrorExample'][];
+      sets: components['schemas']['GrammarExerciseSetSummary'][];
+    };
+    /** @default null */
+    GrammarAreaSummary: {
+      /** Format: double */
+      accuracy: number;
+      /**
+       * Format: double
+       * @default
+       */
+      diagnosticScore: number | null;
+      /** Format: int32 */
+      drillsDone: number;
+      /** Format: int32 */
+      exerciseSets: number;
+      focus: string;
+      key: string;
+      /**
+       * Format: date-time
+       * @default
+       */
+      lastTested: string | null;
+      /**
+       * Format: int64
+       * @default
+       */
+      lessonItemId: number | null;
+      name: string;
+      /** Format: int32 */
+      openErrors: number;
+      /**
+       * Format: double
+       * @default
+       */
+      proficiency: number | null;
+      /** Format: int32 */
+      questionsAnswered: number;
+      recommended: boolean;
+    };
+    /** @default null */
+    GrammarErrorExample: {
+      /** @default  */
+      correction: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: int64 */
+      errorId: number;
+      /** @default  */
+      explanation: string | null;
+      original: string;
+      subtype: string;
+    };
+    /** @default null */
+    GrammarErrorPracticeRow: {
+      /** @default  */
+      area: string | null;
+      /** @default  */
+      areaName: string | null;
+      drillReady: boolean;
+      examples: components['schemas']['Example'][];
+      /** Format: date-time */
+      lastSeen: string;
+      resolved: boolean;
+      retest: boolean;
+      subtype: string;
+      /** Format: int32 */
+      total: number;
+      trend: string;
+      /** Format: int32 */
+      unresolved: number;
+    };
+    /** @default null */
+    GrammarExerciseSessionView: {
+      area: string;
+      areaName: string;
+      exerciseType: string;
+      instructions: string;
+      items: components['schemas']['ExerciseItem'][];
+      kind: string;
+      /** @default  */
+      ownSentence: string | null;
+      /** Format: int64 */
+      sessionId: number;
+      status: string;
+      title: string;
+    };
+    /** @default null */
+    GrammarExerciseSetSummary: {
+      exerciseType: string;
+      /** Format: int32 */
+      itemCount: number;
+      /** Format: int64 */
+      itemId: number;
+      /**
+       * Format: double
+       * @default
+       */
+      lastScore: number | null;
+      /** Format: int32 */
+      timesServed: number;
+      title: string;
+    };
+    /** @default null */
+    GrammarItemResult: {
+      acceptedAnswers: string[];
+      /** @default false */
+      correct: boolean | null;
+      explanation: string;
+      /** @default  */
+      feedback: string | null;
+      given: string;
+      id: string;
+      /** @default  */
+      improvedVersion: string | null;
+      method: string;
+      modelAnswer: string;
+      prompt: string;
+    };
+    /** @default null */
+    GrammarOverview: {
+      areas: components['schemas']['GrammarAreaSummary'][];
+      diagnosticDone: boolean;
+      /**
+       * Format: int64
+       * @default
+       */
+      diagnosticInProgress: number | null;
+      errorPatterns: components['schemas']['GrammarErrorPracticeRow'][];
+    };
+    /** @default null */
+    GrammarResultView: {
+      area: string;
+      areaName: string;
+      items: components['schemas']['GrammarItemResult'][];
+      kind: string;
+      /** Format: int32 */
+      max: number;
+      /** Format: int32 */
+      pending: number;
+      /**
+       * Format: double
+       * @default
+       */
+      proficiency: number | null;
+      /** @default  */
+      rule: string | null;
+      /** Format: int32 */
+      score: number;
+      /** Format: int64 */
+      sessionId: number;
+    };
+    /** @default null */
+    GrammarSelfAssessRequest: {
+      verdicts?: {
+        [key: string]: boolean;
+      };
+    };
+    /** @default null */
+    GrammarSubmitRequest: {
+      answers?: {
+        [key: string]: string;
+      };
+    };
     Health: {
       status: string;
+    };
+    IeltsExample: {
+      context: string;
+      sentence: string;
     };
     InventoryRow: {
       /** Format: int64 */
@@ -451,6 +875,19 @@ export interface components {
       module: string;
       status: string;
       taskType: string;
+    };
+    KeyRule: {
+      example: string;
+      rule: string;
+    };
+    Lesson: {
+      area: string;
+      common_mistakes: components['schemas']['CommonMistake'][];
+      explanation: string;
+      ielts_examples: components['schemas']['IeltsExample'][];
+      key_rules: components['schemas']['KeyRule'][];
+      summary: string;
+      title: string;
     };
     LoginRequest: {
       email: string;
@@ -1153,6 +1590,278 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ErrorSubtypeStats'][];
+        };
+      };
+    };
+  };
+  overview: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GrammarOverview'];
+        };
+      };
+    };
+  };
+  area: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        area: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GrammarAreaDetail'];
+        };
+      };
+    };
+  };
+  generate: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        area: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Accepted */
+      202: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GenerationQueued'];
+        };
+      };
+    };
+  };
+  startDiagnostic: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['DiagnosticView'];
+        };
+      };
+    };
+  };
+  getDiagnostic: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['DiagnosticView'];
+        };
+      };
+    };
+  };
+  answer: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['DiagnosticAnswerRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['DiagnosticAnswerResult'];
+        };
+      };
+    };
+  };
+  startDrill: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        subtype: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GrammarExerciseSessionView'];
+        };
+      };
+    };
+  };
+  startExercise: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        itemId: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GrammarExerciseSessionView'];
+        };
+      };
+    };
+  };
+  session_2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GrammarExerciseSessionView'];
+        };
+      };
+    };
+  };
+  result_2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GrammarResultView'];
+        };
+      };
+    };
+  };
+  selfAssess: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['GrammarSelfAssessRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GrammarResultView'];
+        };
+      };
+    };
+  };
+  submit_2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['GrammarSubmitRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GrammarResultView'];
         };
       };
     };

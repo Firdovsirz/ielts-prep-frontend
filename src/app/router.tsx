@@ -8,6 +8,10 @@ import { HomePage } from '../features/home/HomePage';
 import { WritingHome } from '../features/writing/WritingHome';
 import { WritingSession } from '../features/writing/WritingSession';
 import { WritingResult } from '../features/writing/WritingResult';
+import { GrammarHome } from '../features/grammar/GrammarHome';
+import { GrammarDiagnostic } from '../features/grammar/GrammarDiagnostic';
+import { GrammarArea } from '../features/grammar/GrammarArea';
+import { GrammarSession } from '../features/grammar/GrammarSession';
 
 export const router = createBrowserRouter([
   // Exam screens are full-screen (no sidebar), like the computer-delivered test.
@@ -24,7 +28,10 @@ export const router = createBrowserRouter([
       { path: 'writing', element: <WritingHome /> },
       { path: 'writing/result/:id', element: <WritingResult /> },
       { path: 'speaking', element: <ComingSoon title="Speaking" /> },
-      { path: 'grammar', element: <ComingSoon title="Grammar" /> },
+      { path: 'grammar', element: <GrammarHome /> },
+      { path: 'grammar/diagnostic/:id', element: <GrammarDiagnostic /> },
+      { path: 'grammar/area/:area', element: <GrammarArea /> },
+      { path: 'grammar/session/:id', element: <GrammarSession /> },
       { path: 'vocabulary', element: <ComingSoon title="Vocabulary" /> },
       { path: 'dashboard', element: <ComingSoon title="Progress" /> },
       { path: 'plan', element: <ComingSoon title="Study plan" /> },
