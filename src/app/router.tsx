@@ -17,12 +17,16 @@ import { HistoryPage } from '../features/history/HistoryPage';
 import { ListeningHome } from '../features/listening/ListeningHome';
 import { ListeningSession } from '../features/listening/ListeningSession';
 import { ListeningResult } from '../features/listening/ListeningResult';
+import { SpeakingHome } from '../features/speaking/SpeakingHome';
+import { SpeakingSession } from '../features/speaking/SpeakingSession';
+import { SpeakingResult } from '../features/speaking/SpeakingResult';
 
 export const router = createBrowserRouter([
   // Exam screens are full-screen (no sidebar), like the computer-delivered test.
   { path: '/reading/session/:id', element: <ReadingSession /> },
   { path: '/writing/session/:id', element: <WritingSession /> },
   { path: '/listening/session/:id', element: <ListeningSession /> },
+  { path: '/speaking/session/:id', element: <SpeakingSession /> },
   {
     path: '/',
     element: <Layout />,
@@ -34,7 +38,8 @@ export const router = createBrowserRouter([
       { path: 'listening/result/:id', element: <ListeningResult /> },
       { path: 'writing', element: <WritingHome /> },
       { path: 'writing/result/:id', element: <WritingResult /> },
-      { path: 'speaking', element: <ComingSoon title="Speaking" /> },
+      { path: 'speaking', element: <SpeakingHome /> },
+      { path: 'speaking/result/:id', element: <SpeakingResult /> },
       { path: 'grammar', element: <GrammarHome /> },
       { path: 'grammar/diagnostic/:id', element: <GrammarDiagnostic /> },
       { path: 'grammar/area/:area', element: <GrammarArea /> },

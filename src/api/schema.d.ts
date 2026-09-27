@@ -251,7 +251,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['session_3'];
+    get: operations['session_4'];
     put?: never;
     post?: never;
     delete?: never;
@@ -267,7 +267,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['result_3'];
+    get: operations['result_4'];
     put?: never;
     post?: never;
     delete?: never;
@@ -349,7 +349,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['start_2'];
+    post: operations['start_3'];
     delete?: never;
     options?: never;
     head?: never;
@@ -363,7 +363,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['session_2'];
+    get: operations['session_3'];
     put?: never;
     post?: never;
     delete?: never;
@@ -379,7 +379,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['result_2'];
+    get: operations['result_3'];
     put?: never;
     post?: never;
     delete?: never;
@@ -429,7 +429,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['start_1'];
+    post: operations['start_2'];
     delete?: never;
     options?: never;
     head?: never;
@@ -443,7 +443,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['session_1'];
+    get: operations['session_2'];
     put?: never;
     post?: never;
     delete?: never;
@@ -459,7 +459,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['result_1'];
+    get: operations['result_2'];
     put?: never;
     post?: never;
     delete?: never;
@@ -493,6 +493,134 @@ export interface paths {
     };
     get: operations['get'];
     put: operations['update'];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/speaking/attempts/{id}/regrade': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['regrade_1'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/speaking/responses/{id}/audio': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['audio'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/speaking/sessions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['start_1'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/speaking/sessions/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['session_1'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/speaking/sessions/{id}/examiner': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['next'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/speaking/sessions/{id}/finish': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['finish'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/speaking/sessions/{id}/responses': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['record'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/speaking/sessions/{id}/result': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['result_1'];
+    put?: never;
     post?: never;
     delete?: never;
     options?: never;
@@ -735,6 +863,11 @@ export interface components {
       strengths: string[];
       weaknesses: string[];
     };
+    CueCard: {
+      bullets: string[];
+      explain: string;
+      prompt: string;
+    };
     /** @default null */
     DashboardView: {
       activity: components['schemas']['Activity'];
@@ -881,6 +1014,31 @@ export interface components {
       type: string;
       /** Format: int32 */
       unresolved: number;
+    };
+    /** @default null */
+    ExaminerTurn: {
+      /**
+       * Format: int32
+       * @default
+       */
+      answerSeconds: number | null;
+      conversational: boolean;
+      /** Format: int32 */
+      part: number;
+      /**
+       * Format: int32
+       * @default
+       */
+      prepSeconds: number | null;
+      /** Format: int32 */
+      questionIndex: number;
+      stage: string;
+      /**
+       * Format: int32
+       * @default
+       */
+      talkSeconds: number | null;
+      utterance: string;
     };
     Example: {
       /** Format: int64 */
@@ -1352,6 +1510,10 @@ export interface components {
       email: string;
       role: string;
     };
+    ModelSpokenAnswer: {
+      answer: string;
+      question: string;
+    };
     /** @default null */
     ModuleBands: {
       /**
@@ -1384,6 +1546,28 @@ export interface components {
     Paragraph: {
       label: string;
       text: string;
+    };
+    Part1: {
+      topics: components['schemas']['Part1Topic'][];
+    };
+    Part1Topic: {
+      questions: string[];
+      topic: string;
+    };
+    Part2: {
+      cue_card: components['schemas']['CueCard'];
+      rounding_off_questions: string[];
+      theme: string;
+      topic: string;
+    };
+    Part3: {
+      linked_part2_topic: string;
+      questions: components['schemas']['Part3Question'][];
+      theme: string;
+    };
+    Part3Question: {
+      question: string;
+      sub_topic: string;
     };
     ProcessStep: {
       description: string;
@@ -1689,6 +1873,133 @@ export interface components {
       id: string;
       name: string;
       role: string;
+    };
+    SpeakingGrade: {
+      criteria: components['schemas']['CriterionBand'][];
+      errors: components['schemas']['TaggedError'][];
+      improvements: string[];
+      model_answers: components['schemas']['ModelSpokenAnswer'][];
+      overall_comment: string;
+      pronunciation_assessable: boolean;
+      vocabulary_upgrades: components['schemas']['VocabUpgrade'][];
+    };
+    /** @default null */
+    SpeakingPlan: {
+      /** @default  */
+      part1: components['schemas']['Part1'];
+      /** @default  */
+      part2: components['schemas']['Part2'];
+      /** @default  */
+      part3: components['schemas']['Part3'];
+    };
+    /** @default null */
+    SpeakingResponseView: {
+      /**
+       * Format: int32
+       * @default
+       */
+      durationSeconds: number | null;
+      hasAudio: boolean;
+      /** Format: int64 */
+      id: number;
+      /** Format: int32 */
+      part: number;
+      question: string;
+      /** Format: int32 */
+      questionIndex: number;
+      /** @default  */
+      transcript: string | null;
+    };
+    /** @default null */
+    SpeakingResultView: {
+      /**
+       * Format: int64
+       * @default
+       */
+      attemptId: number | null;
+      /**
+       * Format: double
+       * @default
+       */
+      band: number | null;
+      /** @default  */
+      criteriaBands: {
+        [key: string]: number;
+      } | null;
+      /** @default  */
+      error: string | null;
+      /** @default  */
+      grade: components['schemas']['SpeakingGrade'];
+      /** @enum {string} */
+      kind:
+        | 'READING_TEST'
+        | 'READING_PASSAGE'
+        | 'LISTENING_TEST'
+        | 'LISTENING_SECTION'
+        | 'WRITING_TASK1'
+        | 'WRITING_TASK2'
+        | 'WRITING_TEST'
+        | 'SPEAKING_TEST'
+        | 'SPEAKING_PART'
+        | 'GRAMMAR_DIAGNOSTIC'
+        | 'GRAMMAR_EXERCISE'
+        | 'GRAMMAR_ERROR_DRILL'
+        | 'VOCAB_REVIEW';
+      /** @enum {string} */
+      mode: 'PRACTICE' | 'EXAM';
+      plan: components['schemas']['SpeakingPlan'];
+      responses: components['schemas']['SpeakingResponseView'][];
+      /** Format: int64 */
+      sessionId: number;
+      status: string;
+      /** Format: int32 */
+      words: number;
+      /**
+       * Format: double
+       * @default
+       */
+      wordsPerMinute: number | null;
+    };
+    /** @default null */
+    SpeakingSessionView: {
+      conversational: boolean;
+      examinerAvailable: boolean;
+      /** @enum {string} */
+      kind:
+        | 'READING_TEST'
+        | 'READING_PASSAGE'
+        | 'LISTENING_TEST'
+        | 'LISTENING_SECTION'
+        | 'WRITING_TASK1'
+        | 'WRITING_TASK2'
+        | 'WRITING_TEST'
+        | 'SPEAKING_TEST'
+        | 'SPEAKING_PART'
+        | 'GRAMMAR_DIAGNOSTIC'
+        | 'GRAMMAR_EXERCISE'
+        | 'GRAMMAR_ERROR_DRILL'
+        | 'VOCAB_REVIEW';
+      /** @enum {string} */
+      mode: 'PRACTICE' | 'EXAM';
+      plan: components['schemas']['SpeakingPlan'];
+      responses: components['schemas']['SpeakingResponseView'][];
+      /** Format: int64 */
+      sessionId: number;
+      /** Format: date-time */
+      startedAt: string;
+      status: string;
+      transcription: string;
+    };
+    /** @default null */
+    SpeakingStartRequest: {
+      conversational?: boolean;
+      /** @enum {string} */
+      mode: 'PRACTICE' | 'EXAM';
+      /**
+       * @default null
+       * @enum {string}
+       */
+      scope: 'TEST' | 'PART1' | 'PART2' | 'PART3';
     };
     /** @default null */
     SpendStatus: {
@@ -2296,7 +2607,7 @@ export interface operations {
       };
     };
   };
-  session_3: {
+  session_4: {
     parameters: {
       query?: never;
       header?: never;
@@ -2318,7 +2629,7 @@ export interface operations {
       };
     };
   };
-  result_3: {
+  result_4: {
     parameters: {
       query?: never;
       header?: never;
@@ -2432,7 +2743,7 @@ export interface operations {
       };
     };
   };
-  start_2: {
+  start_3: {
     parameters: {
       query?: never;
       header?: never;
@@ -2456,7 +2767,7 @@ export interface operations {
       };
     };
   };
-  session_2: {
+  session_3: {
     parameters: {
       query?: never;
       header?: never;
@@ -2478,7 +2789,7 @@ export interface operations {
       };
     };
   };
-  result_2: {
+  result_3: {
     parameters: {
       query?: never;
       header?: never;
@@ -2546,7 +2857,7 @@ export interface operations {
       };
     };
   };
-  start_1: {
+  start_2: {
     parameters: {
       query?: never;
       header?: never;
@@ -2570,7 +2881,7 @@ export interface operations {
       };
     };
   };
-  session_1: {
+  session_2: {
     parameters: {
       query?: never;
       header?: never;
@@ -2592,7 +2903,7 @@ export interface operations {
       };
     };
   };
-  result_1: {
+  result_2: {
     parameters: {
       query?: never;
       header?: never;
@@ -2680,6 +2991,197 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['SettingsDto'];
+        };
+      };
+    };
+  };
+  regrade_1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SpeakingResultView'];
+        };
+      };
+    };
+  };
+  audio: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string;
+        };
+      };
+    };
+  };
+  start_1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SpeakingStartRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SpeakingSessionView'];
+        };
+      };
+    };
+  };
+  session_1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SpeakingSessionView'];
+        };
+      };
+    };
+  };
+  next: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ExaminerTurn'];
+        };
+      };
+    };
+  };
+  finish: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SpeakingResultView'];
+        };
+      };
+    };
+  };
+  record: {
+    parameters: {
+      query: {
+        part: number;
+        questionIndex: number;
+        question: string;
+        transcript?: string;
+        durationSeconds?: number;
+      };
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        'multipart/form-data': {
+          /** Format: binary */
+          audio?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SpeakingResponseView'];
+        };
+      };
+    };
+  };
+  result_1: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SpeakingResultView'];
         };
       };
     };

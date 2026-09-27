@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ExamExit } from '../../components/ExamExit';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api, unwrap, type Schemas } from '../../api/client';
@@ -123,6 +124,7 @@ export function ReadingSession() {
   return (
     <div className="exam-shell">
       <div className="exam-bar">
+        <ExamExit to="/reading" />
         <span className="exam-brand">IELTS · Reading</span>
         <span className={`badge ${exam ? 'badge-accent' : 'badge-dark'}`}>
           {exam ? 'Exam mode' : 'Practice'}
