@@ -65,7 +65,8 @@ export function ReadingResult() {
   return (
     <div className="page">
       <PageHeader
-        title="Reading results"
+        eyebrow="Reading results"
+        title={`${r.rawScore} of ${r.maxScore} correct`}
         subtitle={
           r.bandIsEstimate
             ? 'Single-passage band is an estimate (score scaled to 40 questions).'

@@ -121,30 +121,29 @@ export function ReadingSession() {
     );
 
   return (
-    <div>
+    <div className="exam-shell">
       <div className="exam-bar">
-        <strong>Reading {data.kind === 'READING_TEST' ? 'test' : 'passage'}</strong>
-        <span className={`badge ${exam ? 'badge-accent' : 'badge-primary'}`}>
-          {exam ? 'Exam mode' : 'Practice mode'}
+        <span className="exam-brand">IELTS · Reading</span>
+        <span className={`badge ${exam ? 'badge-accent' : 'badge-dark'}`}>
+          {exam ? 'Exam mode' : 'Practice'}
         </span>
-        <div className="tabs" style={{ margin: 0, border: 0 }}>
+        <div className="exam-tabs">
           {data.passages.map((p, i) => (
             <button
               key={p.itemId}
-              className={`tab${i === active ? ' active' : ''}`}
+              className={`exam-tab${i === active ? ' active' : ''}`}
               onClick={() => setActive(i)}
             >
-              Passage {data.passages.length > 1 ? i + 1 : p.passage.difficulty}
-              <span className="small muted">
-                {' '}
-                ({p.numberOffset + 1}–{p.numberOffset + p.questionCount})
-              </span>
+              Passage {data.passages.length > 1 ? i + 1 : p.passage.difficulty}{' '}
+              <small>
+                {p.numberOffset + 1}–{p.numberOffset + p.questionCount}
+              </small>
             </button>
           ))}
         </div>
         <span className="spacer" />
         <Timer remaining={remaining} />
-        <button className="btn" onClick={confirmSubmit} disabled={submit.isPending}>
+        <button className="btn btn-light" onClick={confirmSubmit} disabled={submit.isPending}>
           {submit.isPending ? 'Marking…' : 'Submit'}
         </button>
       </div>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { api, unwrap, type Schemas } from '../../api/client';
 import { ErrorBox, Loading, PageHeader } from '../../components/ui';
 import { titleCase } from '../../lib/format';
+import { ModuleIcon } from '../../components/icons';
 
 type StartBody = Schemas['ReadingStartRequest'];
 
@@ -20,12 +21,14 @@ export function ReadingHome() {
   return (
     <div className="page">
       <PageHeader
-        title="Reading"
-        subtitle="Academic Reading: 3 passages, 40 questions, 60 minutes. Double-click any word in a passage to add it to your vocabulary deck."
+        eyebrow="Reading · Academic"
+        title="Read like a Band 8 candidate"
+        subtitle="3 passages, 40 questions, 60 minutes. Every answer comes with the exact sentence that proves it. Double-click any word to add it to your vocabulary deck."
+        icon={<ModuleIcon module="READING" size={28} />}
       />
       <ErrorBox error={start.error} title="Could not start" />
       <div className="grid grid-3">
-        <div className="card stack">
+        <div className="card card-hover stack">
           <h3>Full test — exam mode</h3>
           <p className="muted small">
             Passages 1–3 back to back, 60-minute countdown that auto-submits, no answers until the end.
@@ -38,7 +41,7 @@ export function ReadingHome() {
             Start 60-minute test
           </button>
         </div>
-        <div className="card stack">
+        <div className="card card-hover stack">
           <h3>Full test — practice mode</h3>
           <p className="muted small">Same 40 questions; the clock counts overtime instead of stopping you.</p>
           <button
@@ -49,7 +52,7 @@ export function ReadingHome() {
             Start practice test
           </button>
         </div>
-        <div className="card stack">
+        <div className="card card-hover stack">
           <h3>Single passage — 20 minutes</h3>
           <p className="muted small">
             Passage 1 is the most accessible; Passage 3 is the hardest (argument, writer's views).

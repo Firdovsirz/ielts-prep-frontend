@@ -52,18 +52,7 @@ export function MapFigure({
               stroke="var(--text-muted)"
               strokeWidth={f.kind === 'road' || f.kind === 'path' ? 0.15 : 0.3}
             />
-            {f.label && (
-              <text
-                x={f.x + f.w / 2}
-                y={f.y + f.h / 2}
-                fontSize={Math.max(1.8, Math.min(3, (f.w / Math.max(f.label.length, 1)) * 1.6))}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="var(--text)"
-              >
-                {f.label}
-              </text>
-            )}
+            {f.label && <FeatureLabel f={f} />}
           </g>
         ))}
         {(map.markers ?? []).map((m) => (
@@ -90,5 +79,44 @@ export function MapFigure({
         </g>
       </svg>
     </figure>
+  );
+}
+
+type Feature = MapSpec['features'][number];
+
+/** Label placement: long roads/rivers get a left-anchored label, tall thin features a rotated one. */
+function FeatureLabel({ f }: { f: Feature }) {
+  const tall = f.h > f.w * 2.5;
+  const long = !tall && (f.kind === 'water' || f.kind === 'road' || f.kind === 'path') && f.w > 30;
+  const span = tall ? f.h : f.w;
+  const size = Math.max(1.9, Math.min(3, (span / Math.max(f.label.length, 1)) * 1.5));
+  if (tall) {
+    const cx = f.x + f.w / 2;
+    const cy = f.y + f.h / 2;
+    return (
+      <text
+        x={cx}
+        y={cy}
+        fontSize={size}
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fill="var(--text)"
+        transform={`rotate(-90 ${cx} ${cy})`}
+      >
+        {f.label}
+      </text>
+    );
+  }
+  return (
+    <text
+      x={long ? f.x + 2 : f.x + f.w / 2}
+      y={f.y + f.h / 2}
+      fontSize={size}
+      textAnchor={long ? 'start' : 'middle'}
+      dominantBaseline="middle"
+      fill="var(--text)"
+    >
+      {f.label}
+    </text>
   );
 }

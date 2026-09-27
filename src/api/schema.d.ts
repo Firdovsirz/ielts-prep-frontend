@@ -52,6 +52,38 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/errors': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/errors/summary': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['summary'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/reading/passages': {
     parameters: {
       query?: never;
@@ -77,7 +109,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['start'];
+    post: operations['start_1'];
     delete?: never;
     options?: never;
     head?: never;
@@ -91,7 +123,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['session'];
+    get: operations['session_1'];
     put?: never;
     post?: never;
     delete?: never;
@@ -107,7 +139,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['result'];
+    get: operations['result_1'];
     put?: never;
     post?: never;
     delete?: never;
@@ -125,7 +157,23 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['submit'];
+    post: operations['submit_1'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/settings': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['get'];
+    put: operations['update'];
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -180,6 +228,118 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/writing/attempts/{id}/regrade': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['regrade'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/writing/prompts': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['prompts'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/writing/sessions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['start'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/writing/sessions/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['session'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/writing/sessions/{id}/result': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['result'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/writing/sessions/{id}/submit': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['submit'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/writing/topic-coverage': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['topicCoverage'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -187,6 +347,18 @@ export interface components {
     ChangePasswordRequest: {
       currentPassword: string;
       newPassword: string;
+    };
+    ChartSeries: {
+      name: string;
+      values: number[];
+    };
+    CriterionBand: {
+      /** Format: int32 */
+      band: number;
+      criterion: string;
+      justification: string;
+      strengths: string[];
+      weaknesses: string[];
     };
     DiagramEdge: {
       from: string;
@@ -205,6 +377,63 @@ export interface components {
       edges: components['schemas']['DiagramEdge'][];
       nodes: components['schemas']['DiagramNode'][];
       title: string;
+    };
+    /** @default null */
+    ErrorEntryView: {
+      /** Format: int64 */
+      attemptId: number;
+      /** @default  */
+      correction: string | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** @default  */
+      explanation: string | null;
+      /** @default  */
+      grammarArea: string | null;
+      /** Format: int64 */
+      id: number;
+      module: string;
+      original: string;
+      /**
+       * Format: date-time
+       * @default
+       */
+      resolvedAt: string | null;
+      subtype: string;
+      type: string;
+    };
+    /** @default null */
+    ErrorSubtypeStats: {
+      /** @default  */
+      area: string | null;
+      examples: components['schemas']['Example'][];
+      /** Format: date-time */
+      first_seen: string;
+      /** Format: date-time */
+      last_seen: string;
+      /** Format: int32 */
+      previous: number;
+      /** Format: int32 */
+      recent: number;
+      resolved: boolean;
+      /** Format: double */
+      score: number;
+      subtype: string;
+      /** Format: int32 */
+      total: number;
+      /** @enum {string} */
+      trend: 'NEW' | 'WORSENING' | 'IMPROVING' | 'STABLE' | 'RESOLVED';
+      type: string;
+      /** Format: int32 */
+      unresolved: number;
+    };
+    Example: {
+      /** Format: int64 */
+      attempt_id: number;
+      correction: string;
+      /** Format: int64 */
+      error_id: number;
+      original: string;
     };
     /** @default null */
     FlaggedWordRequest: {
@@ -239,6 +468,22 @@ export interface components {
       /** Format: double */
       y: number;
     };
+    MapFigure: {
+      features: components['schemas']['MapFigureFeature'][];
+      title: string;
+    };
+    MapFigureFeature: {
+      /** Format: double */
+      h: number;
+      kind: string;
+      label: string;
+      /** Format: double */
+      w: number;
+      /** Format: double */
+      x: number;
+      /** Format: double */
+      y: number;
+    };
     MapMarker: {
       key: string;
       /** Format: double */
@@ -258,6 +503,12 @@ export interface components {
     Paragraph: {
       label: string;
       text: string;
+    };
+    ProcessStep: {
+      description: string;
+      label: string;
+      /** Format: int32 */
+      step: number;
     };
     Question: {
       answers: string[];
@@ -507,6 +758,30 @@ export interface components {
       /** Format: int32 */
       timeUsedSeconds?: number;
     };
+    SettingsDto: {
+      /** @enum {string} */
+      audioMode: 'BROWSER' | 'SERVICE';
+      currentBand: number;
+      /** Format: int32 */
+      dailyStudyMinutes: number;
+      /** @enum {string} */
+      examType: 'ACADEMIC' | 'GENERAL' | 'BOTH';
+      /** Format: int32 */
+      listeningReadingSeconds: number;
+      /** Format: int32 */
+      listeningTransferMinutes: number;
+      onboardingDone: boolean;
+      /** Format: int32 */
+      resolvedAfterPieces: number;
+      /** Format: double */
+      speechRate: number;
+      targetBand: number;
+      /**
+       * Format: date
+       * @default
+       */
+      testDate: string | null;
+    };
     /** @default null */
     SpendStatus: {
       apiKeyConfigured: boolean;
@@ -532,12 +807,236 @@ export interface components {
       rows: string[][];
       title: string;
     };
+    TaggedError: {
+      correction: string;
+      explanation: string;
+      original: string;
+      subtype: string;
+      type: string;
+    };
+    Task1Academic: {
+      categories: string[];
+      chart_type: string;
+      figure_title: string;
+      key_features: string[];
+      maps: components['schemas']['MapFigure'][];
+      process_is_cycle: boolean;
+      process_steps: components['schemas']['ProcessStep'][];
+      prompt: string;
+      series: components['schemas']['ChartSeries'][];
+      topic: string;
+      units: string;
+      x_label: string;
+      y_label: string;
+    };
+    Task1General: {
+      bullet_points: string[];
+      key_features: string[];
+      letter_type: string;
+      prompt: string;
+      recipient: string;
+      situation: string;
+      topic: string;
+    };
+    Task2: {
+      essay_type: string;
+      key_features: string[];
+      prompt: string;
+      question: string;
+      statement: string;
+      subtopic: string;
+      topic: string;
+    };
     TokenResponse: {
       email: string;
       /** Format: date-time */
       expiresAt: string;
       role: string;
       token: string;
+    };
+    VocabUpgrade: {
+      better: string;
+      example: string;
+      original: string;
+    };
+    /** @default null */
+    WritingAttemptView: {
+      /** Format: int64 */
+      attemptId: number;
+      /**
+       * Format: double
+       * @default
+       */
+      band: number | null;
+      /** @default  */
+      criteriaBands: {
+        [key: string]: number;
+      } | null;
+      /** @default  */
+      error: string | null;
+      /** @default  */
+      grade: components['schemas']['WritingGrade'];
+      /**
+       * Format: date-time
+       * @default
+       */
+      gradedAt: string | null;
+      /** Format: int64 */
+      itemId: number;
+      /**
+       * Format: int32
+       * @default
+       */
+      secondsSpent: number | null;
+      status: string;
+      /** Format: date-time */
+      submittedAt: string;
+      /** Format: int32 */
+      task: number;
+      taskType: string;
+      text: string;
+      /** Format: int32 */
+      wordCount: number;
+    };
+    WritingGrade: {
+      criteria: components['schemas']['CriterionBand'][];
+      errors: components['schemas']['TaggedError'][];
+      improvements: string[];
+      model_answer: string;
+      overall_comment: string;
+      vocabulary_upgrades: components['schemas']['VocabUpgrade'][];
+      word_count_comment: string;
+    };
+    /** @default null */
+    WritingPromptSummary: {
+      /** Format: int64 */
+      id: number;
+      origin: string;
+      taskType: string;
+      /** Format: int32 */
+      timesServed: number;
+      /** @default  */
+      title: string | null;
+      /** @default  */
+      topic: string | null;
+      /** @default  */
+      variant: string | null;
+    };
+    /** @default null */
+    WritingResponseRequest: {
+      /** Format: int64 */
+      itemId?: number;
+      /** Format: int32 */
+      secondsSpent?: number;
+      text?: string;
+    };
+    /** @default null */
+    WritingResultView: {
+      attempts: components['schemas']['WritingAttemptView'][];
+      bandIsEstimate: boolean;
+      /** @enum {string} */
+      kind:
+        | 'READING_TEST'
+        | 'READING_PASSAGE'
+        | 'LISTENING_TEST'
+        | 'LISTENING_SECTION'
+        | 'WRITING_TASK1'
+        | 'WRITING_TASK2'
+        | 'WRITING_TEST'
+        | 'SPEAKING_TEST'
+        | 'SPEAKING_PART'
+        | 'GRAMMAR_DIAGNOSTIC'
+        | 'GRAMMAR_EXERCISE'
+        | 'GRAMMAR_ERROR_DRILL'
+        | 'VOCAB_REVIEW';
+      /** @enum {string} */
+      mode: 'PRACTICE' | 'EXAM';
+      /** Format: int64 */
+      sessionId: number;
+      status: string;
+      tasks: components['schemas']['WritingTaskView'][];
+      /**
+       * Format: int32
+       * @default
+       */
+      timeLimitSeconds: number | null;
+      /**
+       * Format: int32
+       * @default
+       */
+      timeUsedSeconds: number | null;
+      /**
+       * Format: double
+       * @default
+       */
+      writingBand: number | null;
+    };
+    /** @default null */
+    WritingSessionView: {
+      /** @enum {string} */
+      kind:
+        | 'READING_TEST'
+        | 'READING_PASSAGE'
+        | 'LISTENING_TEST'
+        | 'LISTENING_SECTION'
+        | 'WRITING_TASK1'
+        | 'WRITING_TASK2'
+        | 'WRITING_TEST'
+        | 'SPEAKING_TEST'
+        | 'SPEAKING_PART'
+        | 'GRAMMAR_DIAGNOSTIC'
+        | 'GRAMMAR_EXERCISE'
+        | 'GRAMMAR_ERROR_DRILL'
+        | 'VOCAB_REVIEW';
+      /** @enum {string} */
+      mode: 'PRACTICE' | 'EXAM';
+      /** Format: int64 */
+      sessionId: number;
+      /** Format: date-time */
+      startedAt: string;
+      status: string;
+      tasks: components['schemas']['WritingTaskView'][];
+      /**
+       * Format: int32
+       * @default
+       */
+      timeLimitSeconds: number | null;
+    };
+    /** @default null */
+    WritingStartRequest: {
+      /** Format: int64 */
+      itemId?: number;
+      /** @enum {string} */
+      mode: 'PRACTICE' | 'EXAM';
+      /**
+       * @default null
+       * @enum {string}
+       */
+      scope: 'TASK1' | 'TASK2' | 'TEST';
+    };
+    /** @default null */
+    WritingSubmitRequest: {
+      responses?: components['schemas']['WritingResponseRequest'][];
+      /** Format: int32 */
+      timeUsedSeconds?: number;
+    };
+    /** @default null */
+    WritingTaskView: {
+      /** Format: int64 */
+      itemId: number;
+      /** Format: int32 */
+      minWords: number;
+      /** Format: int32 */
+      minutes: number;
+      /** Format: int32 */
+      task: number;
+      /** @default  */
+      task1Academic: components['schemas']['Task1Academic'];
+      /** @default  */
+      task1General: components['schemas']['Task1General'];
+      /** @default  */
+      task2: components['schemas']['Task2'];
+      taskType: string;
     };
   };
   responses: never;
@@ -614,6 +1113,50 @@ export interface operations {
       };
     };
   };
+  list: {
+    parameters: {
+      query?: {
+        subtype?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorEntryView'][];
+        };
+      };
+    };
+  };
+  summary: {
+    parameters: {
+      query?: {
+        type?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorSubtypeStats'][];
+        };
+      };
+    };
+  };
   passages: {
     parameters: {
       query?: never;
@@ -634,7 +1177,7 @@ export interface operations {
       };
     };
   };
-  start: {
+  start_1: {
     parameters: {
       query?: never;
       header?: never;
@@ -658,7 +1201,7 @@ export interface operations {
       };
     };
   };
-  session: {
+  session_1: {
     parameters: {
       query?: never;
       header?: never;
@@ -680,7 +1223,7 @@ export interface operations {
       };
     };
   };
-  result: {
+  result_1: {
     parameters: {
       query?: never;
       header?: never;
@@ -702,7 +1245,7 @@ export interface operations {
       };
     };
   };
-  submit: {
+  submit_1: {
     parameters: {
       query?: never;
       header?: never;
@@ -724,6 +1267,50 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ReadingResultView'];
+        };
+      };
+    };
+  };
+  get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SettingsDto'];
+        };
+      };
+    };
+  };
+  update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SettingsDto'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SettingsDto'];
         };
       };
     };
@@ -784,6 +1371,164 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['SystemStatus'];
+        };
+      };
+    };
+  };
+  regrade: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['WritingResultView'];
+        };
+      };
+    };
+  };
+  prompts: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['WritingPromptSummary'][];
+        };
+      };
+    };
+  };
+  start: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['WritingStartRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['WritingSessionView'];
+        };
+      };
+    };
+  };
+  session: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['WritingSessionView'];
+        };
+      };
+    };
+  };
+  result: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['WritingResultView'];
+        };
+      };
+    };
+  };
+  submit: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['WritingSubmitRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['WritingResultView'];
+        };
+      };
+    };
+  };
+  topicCoverage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            [key: string]: number;
+          };
         };
       };
     };
