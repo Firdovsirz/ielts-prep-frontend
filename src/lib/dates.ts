@@ -10,5 +10,5 @@ export function daysUntil(isoDate: string | null | undefined, now = new Date()):
 
 export function greeting(now = new Date()): string {
   const h = now.getHours();
-  return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+  return h < 5 || h >= 18 ? 'Good evening' : h < 12 ? 'Good morning' : 'Good afternoon';
 }

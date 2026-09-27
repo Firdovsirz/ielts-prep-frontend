@@ -1,0 +1,15 @@
+# Frontend on its own:   cd frontend && docker compose up -d --build
+# Serves the built app with nginx and proxies /api to BACKEND_URL (from frontend/.env; default: a backend on the host).
+name: ielts-prep-frontend
+
+services:
+  frontend:
+    build: .
+    image: ielts-prep-frontend:latest
+    environment:
+      BACKEND_URL: ${BACKEND_URL:-http://host.docker.internal:8090}
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
