@@ -3,7 +3,6 @@ import { Layout } from './Layout';
 import { ReadingHome } from '../features/reading/ReadingHome';
 import { ReadingSession } from '../features/reading/ReadingSession';
 import { ReadingResult } from '../features/reading/ReadingResult';
-import { ComingSoon } from './ComingSoon';
 import { HomePage } from '../features/home/HomePage';
 import { WritingHome } from '../features/writing/WritingHome';
 import { WritingSession } from '../features/writing/WritingSession';
@@ -26,6 +25,7 @@ import { CoachPage } from '../features/coach/CoachPage';
 import { MockHome } from '../features/mock/MockHome';
 import { MockRunner } from '../features/mock/MockRunner';
 import { MockReport } from '../features/mock/MockReport';
+import { SettingsPage } from '../features/settings/SettingsPage';
 
 export const router = createBrowserRouter([
   // Exam screens are full-screen (no sidebar), like the computer-delivered test.
@@ -58,7 +58,7 @@ export const router = createBrowserRouter([
       { path: 'mock/report/:id', element: <MockReport /> },
       { path: 'history', element: <HistoryPage /> },
       { path: 'coach', element: <CoachPage /> },
-      { path: 'settings', element: <ComingSoon title="Settings" /> },
+      { path: 'settings', element: <SettingsPage /> },
       { path: '*', element: <Navigate to="/" replace /> },
     ],
   },
