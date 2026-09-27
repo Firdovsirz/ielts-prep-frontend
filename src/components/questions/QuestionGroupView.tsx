@@ -356,7 +356,7 @@ function Feedback({
             Answer: <strong>{result.expected.join(' / ')}</strong>
           </span>
         )}
-        {result.note && <span className="muted"> — {result.note}</span>}
+        {result.note && !result.blank && <span className="muted"> — {result.note}</span>}
       </div>
       {result.justification && (
         <div className="quote">

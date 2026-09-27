@@ -251,7 +251,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['session_2'];
+    get: operations['session_3'];
     put?: never;
     post?: never;
     delete?: never;
@@ -267,7 +267,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get: operations['result_2'];
+    get: operations['result_3'];
     put?: never;
     post?: never;
     delete?: never;
@@ -301,7 +301,7 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    post: operations['submit_2'];
+    post: operations['submit_3'];
     delete?: never;
     options?: never;
     head?: never;
@@ -318,6 +318,86 @@ export interface paths {
     get: operations['history'];
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/listening/sections': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['sections'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/listening/sessions': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['start_2'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/listening/sessions/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['session_2'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/listening/sessions/{id}/result': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['result_2'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/listening/sessions/{id}/submit': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations['submit_2'];
     delete?: never;
     options?: never;
     head?: never;
@@ -1063,6 +1143,167 @@ export interface components {
       summary: string;
       title: string;
     };
+    ListeningPart: {
+      /** Format: int32 */
+      questions_from: number;
+      /** Format: int32 */
+      questions_to: number;
+      /** Format: int32 */
+      start_line: number;
+    };
+    /** @default null */
+    ListeningResultView: {
+      /** Format: double */
+      band: number;
+      bandIsEstimate: boolean;
+      /** Format: int32 */
+      blanks: number;
+      /** @enum {string} */
+      kind:
+        | 'READING_TEST'
+        | 'READING_PASSAGE'
+        | 'LISTENING_TEST'
+        | 'LISTENING_SECTION'
+        | 'WRITING_TASK1'
+        | 'WRITING_TASK2'
+        | 'WRITING_TEST'
+        | 'SPEAKING_TEST'
+        | 'SPEAKING_PART'
+        | 'GRAMMAR_DIAGNOSTIC'
+        | 'GRAMMAR_EXERCISE'
+        | 'GRAMMAR_ERROR_DRILL'
+        | 'VOCAB_REVIEW';
+      /** Format: int32 */
+      maxScore: number;
+      /** @enum {string} */
+      mode: 'PRACTICE' | 'EXAM';
+      /** Format: int32 */
+      rawScore: number;
+      sectionTexts: components['schemas']['ListeningSectionView'][];
+      sections: components['schemas']['ListeningSectionResult'][];
+      /** Format: int64 */
+      sessionId: number;
+      /** Format: date-time */
+      submittedAt: string;
+      /**
+       * Format: int32
+       * @default
+       */
+      timeUsedSeconds: number | null;
+    };
+    ListeningSection: {
+      context_description: string;
+      parts: components['schemas']['ListeningPart'][];
+      question_groups: components['schemas']['QuestionGroup'][];
+      script: components['schemas']['ScriptLine'][];
+      /** Format: int32 */
+      section: number;
+      speakers: components['schemas']['Speaker'][];
+      title: string;
+      topic: string;
+    };
+    /** @default null */
+    ListeningSectionResult: {
+      /** Format: int64 */
+      attemptId: number;
+      /** Format: int64 */
+      itemId: number;
+      /** Format: int32 */
+      max: number;
+      /** Format: int32 */
+      numberOffset: number;
+      questions: components['schemas']['QuestionResult'][];
+      /** Format: int32 */
+      raw: number;
+      /** Format: int32 */
+      section: number;
+      title: string;
+    };
+    /** @default null */
+    ListeningSectionSummary: {
+      /** Format: int64 */
+      id: number;
+      origin: string;
+      /** @default  */
+      questionTypes: string | null;
+      /**
+       * Format: int32
+       * @default
+       */
+      section: number | null;
+      /** Format: int32 */
+      timesServed: number;
+      title: string;
+      /** @default  */
+      topic: string | null;
+    };
+    /** @default null */
+    ListeningSectionView: {
+      /** Format: int64 */
+      itemId: number;
+      /** Format: int32 */
+      numberOffset: number;
+      /** Format: int32 */
+      questionCount: number;
+      section: components['schemas']['ListeningSection'];
+    };
+    /** @default null */
+    ListeningSessionView: {
+      /** @enum {string} */
+      kind:
+        | 'READING_TEST'
+        | 'READING_PASSAGE'
+        | 'LISTENING_TEST'
+        | 'LISTENING_SECTION'
+        | 'WRITING_TASK1'
+        | 'WRITING_TASK2'
+        | 'WRITING_TEST'
+        | 'SPEAKING_TEST'
+        | 'SPEAKING_PART'
+        | 'GRAMMAR_DIAGNOSTIC'
+        | 'GRAMMAR_EXERCISE'
+        | 'GRAMMAR_ERROR_DRILL'
+        | 'VOCAB_REVIEW';
+      /** @enum {string} */
+      mode: 'PRACTICE' | 'EXAM';
+      /** Format: int32 */
+      readingSeconds: number;
+      sections: components['schemas']['ListeningSectionView'][];
+      /** Format: int64 */
+      sessionId: number;
+      /** Format: double */
+      speechRate: number;
+      /** Format: date-time */
+      startedAt: string;
+      status: string;
+      /** Format: int32 */
+      transferMinutes: number;
+    };
+    /** @default null */
+    ListeningStartRequest: {
+      /** Format: int64 */
+      itemId?: number;
+      /** @enum {string} */
+      mode: 'PRACTICE' | 'EXAM';
+      /**
+       * @default null
+       * @enum {string}
+       */
+      scope: 'TEST' | 'SECTION';
+      /** Format: int32 */
+      section?: number;
+    };
+    /** @default null */
+    ListeningSubmitRequest: {
+      answers?: {
+        [key: string]: string;
+      };
+      replaysPerSection?: {
+        [key: string]: number;
+      };
+      /** Format: int32 */
+      timeUsedSeconds?: number;
+    };
     LoginRequest: {
       email: string;
       password: string;
@@ -1414,6 +1655,10 @@ export interface components {
       /** Format: int32 */
       timeUsedSeconds?: number;
     };
+    ScriptLine: {
+      speaker: string;
+      text: string;
+    };
     SettingsDto: {
       /** @enum {string} */
       audioMode: 'BROWSER' | 'SERVICE';
@@ -1437,6 +1682,13 @@ export interface components {
        * @default
        */
       testDate: string | null;
+    };
+    Speaker: {
+      accent: string;
+      gender: string;
+      id: string;
+      name: string;
+      role: string;
     };
     /** @default null */
     SpendStatus: {
@@ -2044,7 +2296,7 @@ export interface operations {
       };
     };
   };
-  session_2: {
+  session_3: {
     parameters: {
       query?: never;
       header?: never;
@@ -2066,7 +2318,7 @@ export interface operations {
       };
     };
   };
-  result_2: {
+  result_3: {
     parameters: {
       query?: never;
       header?: never;
@@ -2114,7 +2366,7 @@ export interface operations {
       };
     };
   };
-  submit_2: {
+  submit_3: {
     parameters: {
       query?: never;
       header?: never;
@@ -2156,6 +2408,120 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['HistoryRow'][];
+        };
+      };
+    };
+  };
+  sections: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ListeningSectionSummary'][];
+        };
+      };
+    };
+  };
+  start_2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ListeningStartRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ListeningSessionView'];
+        };
+      };
+    };
+  };
+  session_2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ListeningSessionView'];
+        };
+      };
+    };
+  };
+  result_2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ListeningResultView'];
+        };
+      };
+    };
+  };
+  submit_2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: number;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ListeningSubmitRequest'];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ListeningResultView'];
         };
       };
     };

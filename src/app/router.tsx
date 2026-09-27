@@ -14,11 +14,15 @@ import { GrammarArea } from '../features/grammar/GrammarArea';
 import { GrammarSession } from '../features/grammar/GrammarSession';
 import { DashboardPage } from '../features/dashboard/DashboardPage';
 import { HistoryPage } from '../features/history/HistoryPage';
+import { ListeningHome } from '../features/listening/ListeningHome';
+import { ListeningSession } from '../features/listening/ListeningSession';
+import { ListeningResult } from '../features/listening/ListeningResult';
 
 export const router = createBrowserRouter([
   // Exam screens are full-screen (no sidebar), like the computer-delivered test.
   { path: '/reading/session/:id', element: <ReadingSession /> },
   { path: '/writing/session/:id', element: <WritingSession /> },
+  { path: '/listening/session/:id', element: <ListeningSession /> },
   {
     path: '/',
     element: <Layout />,
@@ -26,7 +30,8 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'reading', element: <ReadingHome /> },
       { path: 'reading/result/:id', element: <ReadingResult /> },
-      { path: 'listening', element: <ComingSoon title="Listening" /> },
+      { path: 'listening', element: <ListeningHome /> },
+      { path: 'listening/result/:id', element: <ListeningResult /> },
       { path: 'writing', element: <WritingHome /> },
       { path: 'writing/result/:id', element: <WritingResult /> },
       { path: 'speaking', element: <ComingSoon title="Speaking" /> },
