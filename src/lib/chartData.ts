@@ -71,3 +71,9 @@ export function heatStep(accuracy: number | null): string {
   const steps = ['var(--seq-1)', 'var(--seq-2)', 'var(--seq-3)', 'var(--seq-4)', 'var(--seq-5)'];
   return steps[Math.min(4, Math.max(0, Math.floor(accuracy * 5 - 1e-9)))]!;
 }
+
+/** CSS class (heat-0 … heat-5) for a heatmap cell; each step sets a readable text colour per theme. */
+export function heatClass(accuracy: number | null): string {
+  if (accuracy == null) return 'heat-0';
+  return `heat-${1 + Math.min(4, Math.max(0, Math.floor(accuracy * 5 - 1e-9)))}`;
+}

@@ -53,7 +53,16 @@ const MODULES: { module: ModuleName; to: string; title: string; blurb: string; m
 
 export function HomePage() {
   const settings = useQuery({ queryKey: ['settings'], queryFn: () => unwrap(api.GET('/api/settings')) });
+  const dashboard = useQuery({ queryKey: ['dashboard'], queryFn: () => unwrap(api.GET('/api/dashboard')) });
   const s = settings.data;
+  const current = dashboard.data?.current;
+  const moduleBand: Partial<Record<ModuleName, number | null>> = {
+    LISTENING: current?.listening,
+    READING: current?.reading,
+    WRITING: current?.writing,
+    SPEAKING: current?.speaking,
+  };
+  const estimated = current?.overall ?? s?.currentBand ?? null;
   const days = daysUntil(s?.testDate);
 
   return (
@@ -72,8 +81,12 @@ export function HomePage() {
               <span>days to test</span>
             </div>
             <div className="hero-stat">
-              <b>{s?.currentBand?.toFixed(1) ?? '—'}</b>
-              <span>starting band</span>
+              <b>{dashboard.data?.activity.streakDays ?? 0}</b>
+              <span>day streak</span>
+            </div>
+            <div className="hero-stat">
+              <b>{dashboard.data?.activity.itemsCompleted ?? 0}</b>
+              <span>items done</span>
             </div>
             <div className="hero-stat">
               <b>{s?.targetBand?.toFixed(1) ?? '—'}</b>
@@ -91,9 +104,9 @@ export function HomePage() {
         </div>
         <div className="hero-gauges">
           <BandGauge
-            band={s?.currentBand ?? null}
+            band={estimated}
             target={s?.targetBand ?? undefined}
-            label="Estimated"
+            label={current?.overall != null ? 'Estimated' : 'Starting'}
             size={160}
           />
           <BandGauge band={s?.targetBand ?? null} label="Target" size={120} color="#f2b544" />
@@ -111,7 +124,11 @@ export function HomePage() {
           <Link key={m.module} to={m.to} className={`module-card ${moduleClass(m.module)}`}>
             <div className="row-between" style={{ position: 'relative', zIndex: 1 }}>
               <ModuleIcon module={m.module} />
-              <span className="badge">{m.meta}</span>
+              {moduleBand[m.module] != null ? (
+                <span className="band-pill">{moduleBand[m.module]!.toFixed(1)}</span>
+              ) : (
+                <span className="badge">{m.meta}</span>
+              )}
             </div>
             <div style={{ position: 'relative', zIndex: 1 }}>
               <h3 style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>{m.title}</h3>

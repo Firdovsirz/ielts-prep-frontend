@@ -52,6 +52,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/dashboard': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['dashboard'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/errors': {
     parameters: {
       query?: never;
@@ -76,6 +92,22 @@ export interface paths {
       cookie?: never;
     };
     get: operations['summary'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/export': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['export'];
     put?: never;
     post?: never;
     delete?: never;
@@ -270,6 +302,22 @@ export interface paths {
     get?: never;
     put?: never;
     post: operations['submit_2'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/history': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['history'];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -536,6 +584,45 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** @default null */
+    Activity: {
+      /** Format: double */
+      apiSpendToday: number;
+      /** Format: double */
+      apiSpendWeek: number;
+      /** Format: int32 */
+      itemsCompleted: number;
+      last28Days: components['schemas']['DayActivity'][];
+      /** Format: int32 */
+      longestStreak: number;
+      /** Format: int32 */
+      sessionsCompleted: number;
+      /** Format: int32 */
+      streakDays: number;
+      /** Format: int32 */
+      totalMinutes: number;
+    };
+    /** @default null */
+    BandPoint: {
+      /** Format: date-time */
+      at: string;
+      /** Format: double */
+      band: number;
+      estimate: boolean;
+      kind: string;
+      /** Format: int64 */
+      sessionId: number;
+    };
+    /** @default null */
+    BlankStat: {
+      /** Format: double */
+      blankRate: number;
+      /** Format: int32 */
+      blanks: number;
+      label: string;
+      /** Format: int32 */
+      questions: number;
+    };
     ChangePasswordRequest: {
       currentPassword: string;
       newPassword: string;
@@ -549,6 +636,17 @@ export interface components {
       why: string;
       wrong: string;
     };
+    /** @default null */
+    CriteriaPoint: {
+      /** Format: date-time */
+      at: string;
+      /** Format: int64 */
+      attemptId: number;
+      bands: {
+        [key: string]: number;
+      };
+      taskType: string;
+    };
     CriterionBand: {
       /** Format: int32 */
       band: number;
@@ -556,6 +654,44 @@ export interface components {
       justification: string;
       strengths: string[];
       weaknesses: string[];
+    };
+    /** @default null */
+    DashboardView: {
+      activity: components['schemas']['Activity'];
+      bandHistory: {
+        [key: string]: components['schemas']['BandPoint'][];
+      };
+      blanks: components['schemas']['BlankStat'][];
+      criteriaHistory: {
+        [key: string]: components['schemas']['CriteriaPoint'][];
+      };
+      current: components['schemas']['ModuleBands'];
+      /**
+       * Format: int32
+       * @default
+       */
+      daysToTest: number | null;
+      questionTypes: components['schemas']['QuestionTypeAccuracy'][];
+      /** Format: double */
+      startingBand: number;
+      /** Format: double */
+      targetBand: number;
+      /**
+       * Format: date
+       * @default
+       */
+      testDate: string | null;
+      timing: components['schemas']['TimeStat'][];
+      topErrors: components['schemas']['ErrorSubtypeStats'][];
+    };
+    /** @default null */
+    DayActivity: {
+      /** Format: date */
+      date: string;
+      /** Format: int32 */
+      minutes: number;
+      /** Format: int32 */
+      sessions: number;
     };
     /** @default null */
     DiagnosticAnswerRequest: {
@@ -865,6 +1001,44 @@ export interface components {
     Health: {
       status: string;
     };
+    /** @default null */
+    HistoryRow: {
+      /**
+       * Format: double
+       * @default
+       */
+      band: number | null;
+      /**
+       * Format: date-time
+       * @default
+       */
+      finishedAt: string | null;
+      kind: string;
+      /**
+       * Format: int32
+       * @default
+       */
+      maxScore: number | null;
+      mode: string;
+      module: string;
+      /**
+       * Format: int32
+       * @default
+       */
+      rawScore: number | null;
+      /** Format: int64 */
+      sessionId: number;
+      /** Format: date-time */
+      startedAt: string;
+      status: string;
+      /**
+       * Format: int32
+       * @default
+       */
+      timeUsedSeconds: number | null;
+      /** @default  */
+      title: string | null;
+    };
     IeltsExample: {
       context: string;
       sentence: string;
@@ -936,6 +1110,35 @@ export interface components {
     Me: {
       email: string;
       role: string;
+    };
+    /** @default null */
+    ModuleBands: {
+      /**
+       * Format: double
+       * @default
+       */
+      listening: number | null;
+      /**
+       * Format: double
+       * @default
+       */
+      overall: number | null;
+      overallIsEstimate: boolean;
+      /**
+       * Format: double
+       * @default
+       */
+      reading: number | null;
+      /**
+       * Format: double
+       * @default
+       */
+      speaking: number | null;
+      /**
+       * Format: double
+       * @default
+       */
+      writing: number | null;
     };
     Paragraph: {
       label: string;
@@ -1027,6 +1230,22 @@ export interface components {
         | 'FORM_COMPLETION'
         | 'MAP_LABELLING'
         | 'MATCHING';
+    };
+    /** @default null */
+    QuestionTypeAccuracy: {
+      /** Format: double */
+      accuracy: number;
+      /** Format: int32 */
+      correct: number;
+      module: string;
+      questionType: string;
+      /**
+       * Format: double
+       * @default
+       */
+      recentAccuracy: number | null;
+      /** Format: int32 */
+      total: number;
     };
     ReadingPassage: {
       cefr: string;
@@ -1283,6 +1502,19 @@ export interface components {
       statement: string;
       subtopic: string;
       topic: string;
+    };
+    /** @default null */
+    TimeStat: {
+      /**
+       * Format: double
+       * @default
+       */
+      averageSeconds: number | null;
+      /** Format: int32 */
+      count: number;
+      label: string;
+      /** Format: int32 */
+      limitSeconds: number;
     };
     TokenResponse: {
       email: string;
@@ -1550,6 +1782,26 @@ export interface operations {
       };
     };
   };
+  dashboard: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['DashboardView'];
+        };
+      };
+    };
+  };
   list: {
     parameters: {
       query?: {
@@ -1590,6 +1842,28 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ErrorSubtypeStats'][];
+        };
+      };
+    };
+  };
+  export: {
+    parameters: {
+      query?: {
+        format?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': string;
         };
       };
     };
@@ -1862,6 +2136,26 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['GrammarResultView'];
+        };
+      };
+    };
+  };
+  history: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description OK */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HistoryRow'][];
         };
       };
     };

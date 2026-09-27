@@ -2322,3 +2322,171 @@ a.area-row:hover {
   font-size: 1.2rem;
   margin: 0.2rem 0 0;
 }
+
+/* ============================== progress ============================== */
+
+.section-title {
+  margin: 1.8rem 0 0.9rem;
+  font-size: 1.25rem;
+}
+
+.band-strip {
+  display: grid;
+  grid-template-columns: 1.3fr repeat(4, 1fr);
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--navy), var(--navy-700));
+  color: #fff;
+  box-shadow: var(--shadow-lg);
+}
+
+.band-strip > div {
+  padding: 1.2rem 1.35rem;
+}
+
+.band-strip-overall {
+  background: radial-gradient(300px 160px at 0% 0%, rgba(255, 59, 87, 0.45), transparent 70%);
+}
+
+.band-strip-overall .eyebrow {
+  color: #ff8fa0;
+}
+
+.band-strip-overall .muted,
+.band-strip-module .muted {
+  color: rgba(233, 237, 247, 0.7);
+}
+
+.band-strip-value {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 650;
+}
+
+.band-strip-value.sm {
+  font-size: 2rem;
+}
+
+.band-strip-module {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.band-strip-module .module-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  flex: none;
+}
+
+.text-good {
+  color: #6be3a4;
+}
+
+.text-bad {
+  color: #ff9aa6;
+}
+
+@media (max-width: 1100px) {
+  .band-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-card {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+
+.stat-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--brand-soft);
+  color: var(--brand);
+  flex: none;
+}
+
+.chart-card {
+  border-top: 3px solid var(--m);
+}
+
+.empty-chart {
+  height: 190px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.5rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+}
+
+.activity-cells {
+  display: grid;
+  grid-template-columns: repeat(28, 1fr);
+  gap: 4px;
+  height: 64px;
+  align-items: end;
+}
+
+.activity-cell {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.activity-cell > span {
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.heatmap td {
+  padding: 0.35rem 0.4rem;
+}
+
+.module-badge {
+  background: color-mix(in srgb, var(--m) 14%, var(--surface));
+  color: var(--m);
+  border-color: transparent;
+}
+
+.heat-0 {
+  background: var(--surface-2);
+  color: var(--text-muted);
+}
+.heat-1 {
+  background: var(--seq-1);
+  color: var(--text);
+}
+.heat-2 {
+  background: var(--seq-2);
+  color: var(--text);
+}
+.heat-3 {
+  background: var(--seq-3);
+  color: #fff;
+}
+.heat-4 {
+  background: var(--seq-4);
+  color: #fff;
+}
+.heat-5 {
+  background: var(--seq-5);
+  color: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  .heat-2 {
+    color: #fff;
+  }
+  .heat-5 {
+    color: #0b1734;
+  }
+}

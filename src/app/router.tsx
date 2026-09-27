@@ -12,6 +12,8 @@ import { GrammarHome } from '../features/grammar/GrammarHome';
 import { GrammarDiagnostic } from '../features/grammar/GrammarDiagnostic';
 import { GrammarArea } from '../features/grammar/GrammarArea';
 import { GrammarSession } from '../features/grammar/GrammarSession';
+import { DashboardPage } from '../features/dashboard/DashboardPage';
+import { HistoryPage } from '../features/history/HistoryPage';
 
 export const router = createBrowserRouter([
   // Exam screens are full-screen (no sidebar), like the computer-delivered test.
@@ -33,10 +35,10 @@ export const router = createBrowserRouter([
       { path: 'grammar/area/:area', element: <GrammarArea /> },
       { path: 'grammar/session/:id', element: <GrammarSession /> },
       { path: 'vocabulary', element: <ComingSoon title="Vocabulary" /> },
-      { path: 'dashboard', element: <ComingSoon title="Progress" /> },
+      { path: 'dashboard', element: <DashboardPage /> },
       { path: 'plan', element: <ComingSoon title="Study plan" /> },
       { path: 'mock', element: <ComingSoon title="Mock test" /> },
-      { path: 'history', element: <ComingSoon title="History" /> },
+      { path: 'history', element: <HistoryPage /> },
       { path: 'coach', element: <ComingSoon title="Coach reports" /> },
       { path: 'settings', element: <ComingSoon title="Settings" /> },
       { path: '*', element: <Navigate to="/" replace /> },

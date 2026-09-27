@@ -1,5 +1,6 @@
 import {
   bandDomain,
+  heatClass,
   bandTimeline,
   heatStep,
   rollingAverage,
@@ -61,5 +62,8 @@ describe('chart data transforms', () => {
     expect(heatStep(0)).toBe('var(--seq-1)');
     expect(heatStep(1)).toBe('var(--seq-5)');
     expect(heatStep(0.55)).toBe('var(--seq-3)');
+    expect(heatClass(null)).toBe('heat-0');
+    expect(heatClass(0.2)).toBe('heat-1');
+    expect(heatClass(1)).toBe('heat-5');
   });
 });
