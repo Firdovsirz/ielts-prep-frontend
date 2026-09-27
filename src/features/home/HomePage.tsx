@@ -5,6 +5,7 @@ import { BandGauge } from '../../components/ui';
 import { ModuleIcon, type ModuleName } from '../../components/icons';
 import { moduleClass } from '../../lib/modules';
 import { daysUntil, greeting } from '../../lib/dates';
+import { TodayPlan } from '../plan/TodayPlan';
 
 const MODULES: { module: ModuleName; to: string; title: string; blurb: string; meta: string }[] = [
   {
@@ -97,8 +98,8 @@ export function HomePage() {
             <Link className="btn btn-light" to="/mock">
               Take a full mock test
             </Link>
-            <Link className="btn" to="/plan">
-              Today&apos;s plan
+            <Link className="btn" to="/coach">
+              Weekly coach report
             </Link>
           </div>
         </div>
@@ -112,6 +113,10 @@ export function HomePage() {
           <BandGauge band={s?.targetBand ?? null} label="Target" size={120} color="#f2b544" />
         </div>
       </section>
+
+      <div style={{ marginTop: '1.6rem' }}>
+        <TodayPlan />
+      </div>
 
       <div className="row-between" style={{ margin: '2rem 0 1rem' }}>
         <div>

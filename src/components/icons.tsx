@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { moduleClass } from '../lib/modules';
 
-type IconName =
+export type IconName =
   | 'today'
   | 'plan'
   | 'progress'

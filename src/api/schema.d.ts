@@ -52,6 +52,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/coach/reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["list"];
+        put?: never;
+        post: operations["generate_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/coach/reports/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["get_1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/dashboard": {
         parameters: {
             query?: never;
@@ -75,7 +107,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["list"];
+        get: operations["list_1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -398,6 +430,54 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["submit_2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/plan": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["plan"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/plan/regenerate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["regenerate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/plan/tasks/{id}/toggle": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["toggle"];
         delete?: never;
         options?: never;
         head?: never;
@@ -998,6 +1078,37 @@ export interface components {
         ChartSeries: {
             name: string;
             values: number[];
+        };
+        /** @default null */
+        CoachPriority: {
+            detail: string;
+            module: string;
+            title: string;
+        };
+        /** @default null */
+        CoachReportContent: {
+            band_outlook: string;
+            concerns: string[];
+            encouragement: string;
+            headline: string;
+            priorities: components["schemas"]["CoachPriority"][];
+            summary: string;
+            wins: string[];
+        };
+        /** @default null */
+        CoachReportView: {
+            content: components["schemas"]["CoachReportContent"];
+            /** Format: date-time */
+            createdAt: string;
+            generatedBy: string;
+            /** Format: int64 */
+            id: number;
+            stats: components["schemas"]["WeeklyStats"];
+            trigger: string;
+            /** Format: date */
+            weekEnd: string;
+            /** Format: date */
+            weekStart: string;
         };
         CommonMistake: {
             right: string;
@@ -1703,6 +1814,73 @@ export interface components {
             question: string;
             sub_topic: string;
         };
+        /** @default null */
+        PlanDayView: {
+            /** Format: date */
+            date: string;
+            /** Format: int32 */
+            minutesDone: number;
+            /** Format: int32 */
+            minutesPlanned: number;
+            tasks: components["schemas"]["PlanTaskView"][];
+            testDay: boolean;
+            today: boolean;
+        };
+        /** @default null */
+        PlanTaskView: {
+            action: string;
+            /** Format: date */
+            date: string;
+            /** @default  */
+            details: string | null;
+            done: boolean;
+            /**
+             * Format: date-time
+             * @default
+             */
+            doneAt: string | null;
+            /** Format: int64 */
+            id: number;
+            /** Format: int32 */
+            minutes: number;
+            module: string;
+            /** Format: int32 */
+            priority: number;
+            title: string;
+            /** @default  */
+            variant: string | null;
+        };
+        /** @default null */
+        PlanToggleRequest: {
+            done?: boolean;
+        };
+        /** @default null */
+        PlanView: {
+            aiAvailable: boolean;
+            days: components["schemas"]["PlanDayView"][];
+            /**
+             * Format: int32
+             * @default
+             */
+            daysToTest: number | null;
+            /** @default  */
+            focus: string | null;
+            /**
+             * Format: date-time
+             * @default
+             */
+            generatedAt: string | null;
+            phase: string;
+            phaseLabel: string;
+            source: string;
+            /**
+             * Format: date
+             * @default
+             */
+            testDate: string | null;
+            /** Format: date */
+            today: string;
+        };
         ProcessStep: {
             description: string;
             label: string;
@@ -2238,6 +2416,119 @@ export interface components {
             original: string;
         };
         /** @default null */
+        WeeklyAreaStat: {
+            name: string;
+            /** Format: int32 */
+            openErrors: number;
+            /**
+             * Format: double
+             * @default
+             */
+            proficiency: number | null;
+        };
+        /** @default null */
+        WeeklyErrorTrend: {
+            /** Format: int32 */
+            recent: number;
+            resolved: boolean;
+            subtype: string;
+            /** Format: int32 */
+            total: number;
+            trend: string;
+            type: string;
+        };
+        /** @default null */
+        WeeklyModuleStats: {
+            /**
+             * Format: double
+             * @default
+             */
+            averageBand: number | null;
+            /**
+             * Format: double
+             * @default
+             */
+            bestBand: number | null;
+            /** Format: int32 */
+            minutes: number;
+            /** Format: int32 */
+            sessions: number;
+        };
+        /** @default null */
+        WeeklyPlan: {
+            /** Format: double */
+            completion: number;
+            /** Format: int32 */
+            done: number;
+            /** Format: int32 */
+            tasks: number;
+        };
+        /** @default null */
+        WeeklyStats: {
+            /** Format: int32 */
+            activeDays: number;
+            /** Format: double */
+            apiSpendWeek: number;
+            currentBands: components["schemas"]["ModuleBands"];
+            /**
+             * Format: int32
+             * @default
+             */
+            daysToTest: number | null;
+            errorPatterns: components["schemas"]["WeeklyErrorTrend"][];
+            /** Format: int64 */
+            errorsLogged: number;
+            /** Format: int64 */
+            errorsResolved: number;
+            /** Format: int32 */
+            minutes: number;
+            modules: {
+                [key: string]: components["schemas"]["WeeklyModuleStats"];
+            };
+            plan: components["schemas"]["WeeklyPlan"];
+            /** Format: int32 */
+            sessions: number;
+            speakingCriteria: {
+                [key: string]: number;
+            };
+            /** Format: int32 */
+            streakDays: number;
+            /** Format: double */
+            targetBand: number;
+            vocab: components["schemas"]["WeeklyVocab"];
+            weakQuestionTypes: components["schemas"]["WeeklyWeakType"][];
+            weakestGrammarAreas: components["schemas"]["WeeklyAreaStat"][];
+            /** Format: date */
+            weekEnd: string;
+            /** Format: date */
+            weekStart: string;
+            writingCriteria: {
+                [key: string]: number;
+            };
+        };
+        /** @default null */
+        WeeklyVocab: {
+            /** Format: int64 */
+            added: number;
+            /** Format: int64 */
+            due: number;
+            /** Format: int64 */
+            learned: number;
+            /** Format: int64 */
+            reviews: number;
+            /** Format: int64 */
+            total: number;
+        };
+        /** @default null */
+        WeeklyWeakType: {
+            /** Format: double */
+            accuracy: number;
+            module: string;
+            questionType: string;
+            /** Format: int32 */
+            total: number;
+        };
+        /** @default null */
         WordBankEntry: {
             cefr: string;
             collocations: string[];
@@ -2493,6 +2784,68 @@ export interface operations {
             };
         };
     };
+    list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CoachReportView"][];
+                };
+            };
+        };
+    };
+    generate_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CoachReportView"];
+                };
+            };
+        };
+    };
+    get_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CoachReportView"];
+                };
+            };
+        };
+    };
     dashboard: {
         parameters: {
             query?: never;
@@ -2513,7 +2866,7 @@ export interface operations {
             };
         };
     };
-    list: {
+    list_1: {
         parameters: {
             query?: {
                 subtype?: string;
@@ -2981,6 +3334,74 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ListeningResultView"];
+                };
+            };
+        };
+    };
+    plan: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanView"];
+                };
+            };
+        };
+    };
+    regenerate: {
+        parameters: {
+            query?: {
+                ai?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanView"];
+                };
+            };
+        };
+    };
+    toggle: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlanToggleRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanTaskView"];
                 };
             };
         };

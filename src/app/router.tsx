@@ -21,6 +21,8 @@ import { SpeakingHome } from '../features/speaking/SpeakingHome';
 import { SpeakingSession } from '../features/speaking/SpeakingSession';
 import { SpeakingResult } from '../features/speaking/SpeakingResult';
 import { VocabularyPage } from '../features/vocab/VocabularyPage';
+import { PlanPage } from '../features/plan/PlanPage';
+import { CoachPage } from '../features/coach/CoachPage';
 
 export const router = createBrowserRouter([
   // Exam screens are full-screen (no sidebar), like the computer-delivered test.
@@ -47,10 +49,10 @@ export const router = createBrowserRouter([
       { path: 'grammar/session/:id', element: <GrammarSession /> },
       { path: 'vocabulary', element: <VocabularyPage /> },
       { path: 'dashboard', element: <DashboardPage /> },
-      { path: 'plan', element: <ComingSoon title="Study plan" /> },
+      { path: 'plan', element: <PlanPage /> },
       { path: 'mock', element: <ComingSoon title="Mock test" /> },
       { path: 'history', element: <HistoryPage /> },
-      { path: 'coach', element: <ComingSoon title="Coach reports" /> },
+      { path: 'coach', element: <CoachPage /> },
       { path: 'settings', element: <ComingSoon title="Settings" /> },
       { path: '*', element: <Navigate to="/" replace /> },
     ],
