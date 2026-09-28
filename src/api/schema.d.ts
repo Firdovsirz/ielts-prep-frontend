@@ -772,6 +772,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/system/api-key": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["apiKeyStatus"];
+        put: operations["saveApiKey"];
+        post?: never;
+        delete: operations["deleteApiKey"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/system/health": {
         parameters: {
             query?: never;
@@ -1129,6 +1145,17 @@ export interface components {
             streakDays: number;
             /** Format: int32 */
             totalMinutes: number;
+        };
+        /** @default null */
+        ApiKeyRequest: {
+            apiKey?: string;
+        };
+        /** @default null */
+        ApiKeyStatus: {
+            configured: boolean;
+            /** @default  */
+            hint: string | null;
+            source: string;
         };
         /** @default null */
         BandPoint: {
@@ -2469,6 +2496,9 @@ export interface components {
         };
         SystemStatus: {
             apiKeyConfigured: boolean;
+            /** @default  */
+            apiKeyHint: string | null;
+            apiKeySource: string;
             inventory: components["schemas"]["InventoryRow"][];
             models: {
                 [key: string]: string;
@@ -4089,6 +4119,70 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SpeakingResultView"];
+                };
+            };
+        };
+    };
+    apiKeyStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiKeyStatus"];
+                };
+            };
+        };
+    };
+    saveApiKey: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApiKeyRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiKeyStatus"];
+                };
+            };
+        };
+    };
+    deleteApiKey: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiKeyStatus"];
                 };
             };
         };

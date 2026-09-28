@@ -4180,3 +4180,16 @@ kbd {
   margin: 0 0 0.3rem;
   color: var(--bad);
 }
+
+.api-key-form {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0.4rem 0 1.1rem;
+  padding: 0.9rem;
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+a.badge {
+  text-decoration: none;
+}

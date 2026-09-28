@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { api, unwrap } from '../api/client';
 import { useAuth } from './auth';
@@ -53,7 +53,13 @@ export function SpendIndicator({ dark }: { dark?: boolean }) {
   if (!data) return null;
   if (!data.apiKeyConfigured) {
     return (
-      <span className={`badge ${dark ? 'badge-dark' : 'badge-warn'}`}>No API key · seed content only</span>
+      <Link
+        to="/settings"
+        className={`badge ${dark ? 'badge-dark' : 'badge-warn'}`}
+        title="Add your Claude API key in Settings"
+      >
+        No API key · add it in Settings
+      </Link>
     );
   }
   return (

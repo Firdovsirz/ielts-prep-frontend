@@ -209,6 +209,76 @@ function SettingsForm({ initial }: { initial: Settings }) {
   );
 }
 
+function ApiKeyForm({ source, configured }: { source: string; configured: boolean }) {
+  const qc = useQueryClient();
+  const [key, setKey] = useState('');
+  const [saved, setSaved] = useState(false);
+  const refresh = () => {
+    qc.invalidateQueries({ queryKey: ['system'] });
+    qc.invalidateQueries({ queryKey: ['spend'] });
+  };
+  const save = useMutation({
+    mutationFn: () => unwrap(api.PUT('/api/system/api-key', { body: { apiKey: key.trim() } })),
+    onSuccess: () => {
+      setKey('');
+      setSaved(true);
+      refresh();
+    },
+  });
+  const remove = useMutation({
+    mutationFn: () => unwrap(api.DELETE('/api/system/api-key')),
+    onSuccess: () => {
+      setSaved(false);
+      refresh();
+    },
+  });
+
+  function submit(e: FormEvent) {
+    e.preventDefault();
+    setSaved(false);
+    if (key.trim()) save.mutate();
+  }
+
+  return (
+    <form className="api-key-form" onSubmit={submit}>
+      <label className="field">
+        <span className="field-label">{configured ? 'Replace the API key' : 'Anthropic API key'}</span>
+        <div className="row" style={{ flexWrap: 'nowrap' }}>
+          <input
+            className="input"
+            type="password"
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="sk-ant-…"
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+            style={{ flex: 1 }}
+          />
+          <button className="btn" disabled={!key.trim() || save.isPending}>
+            {save.isPending ? 'Verifying…' : 'Save key'}
+          </button>
+        </div>
+        <span className="field-hint">
+          Create one at console.anthropic.com → API keys. It is checked with Anthropic, stored only on your
+          server and never shown again.
+        </span>
+      </label>
+      <ErrorBox error={save.error ?? remove.error} />
+      {saved && <div className="alert alert-good small">Key verified and saved — AI features are on.</div>}
+      {source === 'APP' && (
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm"
+          onClick={() => remove.mutate()}
+          disabled={remove.isPending}
+        >
+          Remove the saved key
+        </button>
+      )}
+    </form>
+  );
+}
+
 function ClaudeCard({ status, error }: { status?: Schemas['SystemStatus']; error: unknown }) {
   const verified = (status?.inventory ?? []).filter((r) => r.status === 'VERIFIED');
   const spend = status?.spend;
@@ -218,17 +288,19 @@ function ClaudeCard({ status, error }: { status?: Schemas['SystemStatus']; error
       <div className="card-title">
         <h2>Claude API</h2>
         <span className={`badge ${status?.apiKeyConfigured ? 'badge-good' : 'badge-warn'}`}>
-          {status?.apiKeyConfigured ? 'Key configured' : 'No API key'}
+          {status?.apiKeyConfigured
+            ? `Key ${status.apiKeySource === 'APP' ? 'saved in the app' : 'from .env'} ${status.apiKeyHint ?? ''}`
+            : 'No API key'}
         </span>
       </div>
       <ErrorBox error={error} />
       {!status?.apiKeyConfigured && (
         <p className="small">
-          The app works offline with its verified seed content. To enable grading, the AI examiner, the coach
-          and new content, put your key in <code>ANTHROPIC_API_KEY=</code> in the <code>.env</code> file at
-          the project root and restart the backend.
+          The app works offline with its verified seed content. Add your Anthropic API key to turn on Writing
+          and Speaking grading, the AI examiner, the coach and new content.
         </p>
       )}
+      {status && <ApiKeyForm source={status.apiKeySource} configured={status.apiKeyConfigured} />}
       {spend && (
         <div className="stack" style={{ gap: '0.4rem' }}>
           <div className="row-between small">

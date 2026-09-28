@@ -26,6 +26,12 @@ The image (`Dockerfile`) builds the app with Node 22 and serves `dist/` with ngi
 60 MB uploads for Speaking recordings, uses 300 s proxy timeouts for grading, and falls back to `index.html` for
 client-side routes.
 
+## Behind nginx with HTTPS
+
+`deploy/nginx/ielts.firdovsirzaev.online.conf` is the host nginx site for this app (proxy to `127.0.0.1:3300`,
+security headers, 60 MB uploads, login rate limit). Copy it to `/etc/nginx/sites-available/`, enable it, then run
+`certbot --nginx -d <your domain>`. HTTPS is required for microphone recording.
+
 ## Develop
 
 Requirements: Node.js 22 LTS or newer, and the backend running on `http://localhost:8090`.
