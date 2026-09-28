@@ -6,6 +6,8 @@ type AuthState = {
   token: string | null;
   email: string | null;
   login: (email: string, password: string) => Promise<void>;
+  /** Replaces the session after the account's e-mail or password changed (the server issues a new token). */
+  applySession: (session: { token: string; email: string }) => void;
   logout: () => void;
 };
 
@@ -39,7 +41,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setEmail(res.email);
   }, []);
 
-  const value = useMemo(() => ({ token, email, login, logout }), [token, email, login, logout]);
+  const applySession = useCallback((session: { token: string; email: string }) => {
+    tokenStore.set(session.token);
+    setToken(session.token);
+    setEmail(session.email);
+  }, []);
+
+  const value = useMemo(
+    () => ({ token, email, login, applySession, logout }),
+    [token, email, login, applySession, logout],
+  );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

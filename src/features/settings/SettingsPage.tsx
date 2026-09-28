@@ -5,6 +5,7 @@ import { ErrorBox, Loading, PageHeader } from '../../components/ui';
 import { Icon } from '../../components/icons';
 import { formatUsd, titleCase } from '../../lib/format';
 import { downloadExport } from '../../lib/download';
+import { useAuth } from '../../app/auth';
 
 type Settings = Schemas['SettingsDto'];
 const BANDS = Array.from({ length: 11 }, (_, i) => (4 + i * 0.5).toFixed(1));
@@ -33,7 +34,7 @@ export function SettingsPage() {
       <div className="grid grid-2" style={{ marginTop: '1.2rem' }}>
         <ClaudeCard status={status.data} error={status.error} />
         <div className="stack">
-          <PasswordCard />
+          <AccountCard />
           <DataCard />
         </div>
       </div>
@@ -348,40 +349,71 @@ function ClaudeCard({ status, error }: { status?: Schemas['SystemStatus']; error
   );
 }
 
-function PasswordCard() {
+function AccountCard() {
+  const { email, applySession } = useAuth();
+  const [newEmail, setNewEmail] = useState<string | null>(null);
   const [current, setCurrent] = useState('');
   const [next, setNext] = useState('');
-  const [done, setDone] = useState(false);
-  const change = useMutation({
+  const [repeat, setRepeat] = useState('');
+  const [done, setDone] = useState<string | null>(null);
+  const emailValue = newEmail ?? email ?? '';
+  const emailChanged = !!email && emailValue.trim().toLowerCase() !== email.toLowerCase();
+  const mismatch = next.length > 0 && repeat.length > 0 && next !== repeat;
+  const tooShort = next.length > 0 && next.length < 8;
+  const canSave =
+    !!current && (emailChanged || next.length > 0) && !mismatch && !tooShort && (!next || next === repeat);
+
+  const save = useMutation({
     mutationFn: () =>
-      unwrap(api.POST('/api/auth/password', { body: { currentPassword: current, newPassword: next } })),
-    onSuccess: () => {
+      unwrap(
+        api.PUT('/api/auth/account', {
+          body: {
+            currentPassword: current,
+            email: emailChanged ? emailValue.trim() : undefined,
+            newPassword: next || undefined,
+          },
+        }),
+      ),
+    onSuccess: (session) => {
+      applySession(session);
+      setDone(
+        emailChanged && next
+          ? 'E-mail and password changed.'
+          : emailChanged
+            ? `You now sign in as ${session.email}.`
+            : 'Password changed.',
+      );
+      setNewEmail(null);
       setCurrent('');
       setNext('');
-      setDone(true);
+      setRepeat('');
     },
   });
+
   return (
     <form
       className="card"
       onSubmit={(e) => {
         e.preventDefault();
-        setDone(false);
-        change.mutate();
+        setDone(null);
+        if (canSave) save.mutate();
       }}
     >
-      <h2>Password</h2>
+      <h2>Account</h2>
       <div className="field-grid">
-        <Field label="Current password">
+        <Field label="Login e-mail">
           <input
             className="input"
-            type="password"
-            autoComplete="current-password"
-            value={current}
-            onChange={(e) => setCurrent(e.target.value)}
+            type="email"
+            autoComplete="username"
+            value={emailValue}
+            onChange={(e) => setNewEmail(e.target.value)}
           />
         </Field>
-        <Field label="New password" hint="At least 8 characters.">
+        <Field
+          label="New password"
+          hint={tooShort ? 'At least 8 characters.' : 'Leave empty to keep the current one.'}
+        >
           <input
             className="input"
             type="password"
@@ -390,12 +422,32 @@ function PasswordCard() {
             onChange={(e) => setNext(e.target.value)}
           />
         </Field>
+        {next && (
+          <Field label="Repeat the new password" hint={mismatch ? 'The passwords do not match.' : undefined}>
+            <input
+              className="input"
+              type="password"
+              autoComplete="new-password"
+              value={repeat}
+              onChange={(e) => setRepeat(e.target.value)}
+            />
+          </Field>
+        )}
+        <Field label="Current password" hint="Required to change the e-mail or password.">
+          <input
+            className="input"
+            type="password"
+            autoComplete="current-password"
+            value={current}
+            onChange={(e) => setCurrent(e.target.value)}
+          />
+        </Field>
       </div>
-      <ErrorBox error={change.error} />
+      <ErrorBox error={save.error} />
       <div className="row" style={{ justifyContent: 'flex-end' }}>
-        {done && <span className="small text-good">Password changed ✓</span>}
-        <button className="btn btn-secondary" disabled={!current || next.length < 8 || change.isPending}>
-          Change password
+        {done && <span className="small text-good">{done} ✓</span>}
+        <button className="btn btn-secondary" disabled={!canSave || save.isPending}>
+          Save changes
         </button>
       </div>
     </form>
