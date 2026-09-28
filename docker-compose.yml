@@ -9,7 +9,7 @@ services:
     environment:
       BACKEND_URL: ${BACKEND_URL:-http://host.docker.internal:8090}
     ports:
-      - "${FRONTEND_PORT:-3000}:80"
+      - "${FRONTEND_BIND:-0.0.0.0}:${FRONTEND_PORT:-3000}:80"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped

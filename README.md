@@ -20,6 +20,7 @@ docker compose up -d --build    # or docker-compose → http://localhost:3000
 |---|---|---|
 | `BACKEND_URL` | `http://host.docker.internal:8090` | Where nginx proxies `/api` |
 | `FRONTEND_PORT` | `3000` | Host port |
+| `FRONTEND_BIND` | `0.0.0.0` | `127.0.0.1` to accept connections only from a reverse proxy on the same machine |
 
 The image (`Dockerfile`) builds the app with Node 22 and serves `dist/` with nginx (`nginx.conf.template`). It allows
 60 MB uploads for Speaking recordings, uses 300 s proxy timeouts for grading, and falls back to `index.html` for
