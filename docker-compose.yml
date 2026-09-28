@@ -1,5 +1,5 @@
-# Frontend on its own:   cd frontend && docker compose up -d --build
-# Serves the built app with nginx and proxies /api to BACKEND_URL (from frontend/.env; default: a backend on the host).
+# This repository alone:  docker compose up -d --build   (or docker-compose)
+# Serves the built app with nginx and proxies /api to BACKEND_URL (from .env; default: a backend on the Docker host).
 name: ielts-prep-frontend
 
 services:

@@ -13,7 +13,7 @@
     "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "gen:api": "openapi-typescript ../docs/api/openapi.json -o src/api/schema.d.ts"
+    "gen:api": "openapi-typescript ${OPENAPI_SPEC:-../docs/api/openapi.json} -o src/api/schema.d.ts"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "5.3.0",
